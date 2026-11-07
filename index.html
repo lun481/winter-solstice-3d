@@ -1,0 +1,2422 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a141a">
+<meta name="description" content="立冬。十月节，水始冰，地始冻。一候水始冰，二候地始冻，三候雉入大水为蜃。万物收藏，静待春归。">
+<title>立冬 · 十月节</title>
+<script>document.documentElement.className = 'js';</script>
+<style>
+:root{
+  --bg:#081116;
+  --ink:#e8f0f1;
+  --frost:#c6d7db;
+  --mist:#a2b8bf;
+  --dim:rgba(192,211,216,.52);
+  --faint:rgba(195,215,220,.28);
+  --warm:#e3a46d;
+  --serif:"Noto Serif SC","Source Han Serif SC","Songti SC","STSong","SimSun","Times New Roman",serif;
+  --sans:"Noto Sans SC","Source Han Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{
+  background:var(--bg);
+  scrollbar-width:none;
+  -webkit-text-size-adjust:100%;
+}
+html::-webkit-scrollbar,body::-webkit-scrollbar{display:none;width:0;height:0}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  overflow-x:hidden;
+  touch-action:pan-y;
+  overscroll-behavior-y:none;
+  min-height:100dvh;
+}
+::selection{background:rgba(174,205,213,.22);color:#f2f7f8}
+#fallback2d,#scene{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block;
+}
+#fallback2d{z-index:1;opacity:1;transition:opacity 1.15s ease}
+#scene{z-index:2;opacity:0;transition:opacity 1.15s ease;touch-action:pan-y}
+body.mode-webgl #scene{opacity:1}
+body.mode-webgl #fallback2d{opacity:0}
+#veil{
+  position:fixed;
+  inset:0;
+  z-index:3;
+  pointer-events:none;
+  background:
+    radial-gradient(ellipse at 50% 48%, rgba(8,17,22,0) 36%, rgba(5,12,16,.34) 76%, rgba(3,8,11,.62) 100%),
+    linear-gradient(to bottom, rgba(5,13,18,.30) 0%, rgba(5,13,18,0) 22%, rgba(5,13,18,0) 76%, rgba(4,10,14,.42) 100%);
+}
+#grain{
+  position:fixed;
+  inset:0;
+  z-index:3;
+  pointer-events:none;
+  opacity:.07;
+  mix-blend-mode:soft-light;
+  background-repeat:repeat;
+}
+#experience{
+  position:fixed;
+  inset:0;
+  z-index:4;
+  pointer-events:none;
+}
+#scroll-space{height:500vh;width:1px;margin:0 auto;pointer-events:none}
+.masthead{
+  position:fixed;
+  z-index:6;
+  left:calc(env(safe-area-inset-left) + clamp(22px,5vw,74px));
+  top:calc(env(safe-area-inset-top) + clamp(30px,7vh,82px));
+  max-width:min(70vw,560px);
+  pointer-events:none;
+  transition:opacity .9s ease, visibility .9s ease;
+}
+.masthead h1{
+  margin:0;
+  font-family:var(--serif);
+  font-weight:600;
+  font-size:clamp(64px,11vw,156px);
+  line-height:.94;
+  letter-spacing:.18em;
+  color:rgba(233,242,244,.90);
+  text-shadow:0 2px 38px rgba(1,8,12,.55);
+}
+.masthead .sub{
+  margin:clamp(20px,3vh,34px) 0 0;
+  font-family:var(--serif);
+  font-size:clamp(14px,1.5vw,19px);
+  letter-spacing:.38em;
+  color:var(--mist);
+  white-space:nowrap;
+}
+.masthead .note{
+  display:block;
+  margin-top:clamp(22px,4vh,48px);
+  font-size:10px;
+  letter-spacing:.34em;
+  color:var(--faint);
+}
+body.mode-webgl .masthead{
+  opacity:0;
+  transition:opacity 1s ease;
+}
+.reduced-layout .masthead{
+  opacity:1 !important;
+  visibility:visible !important;
+  top:auto;
+  bottom:calc(env(safe-area-inset-bottom) + clamp(54px,9vh,110px));
+}
+.reduced-layout .masthead h1{font-size:clamp(48px,7vw,92px)}
+.reduced-layout .masthead .sub{font-size:clamp(13px,1.3vw,16px)}
+#narrative{position:absolute;inset:0}
+.waypoint{
+  position:fixed;
+  left:50%;
+  top:50%;
+  width:min(78vw,560px);
+  margin:0;
+  opacity:0;
+  transform:translate(-50%,-50%);
+  will-change:opacity,transform,left,top,filter;
+  text-shadow:0 2px 16px rgba(1,7,10,.82), 0 1px 2px rgba(1,7,10,.85);
+}
+.waypoint::before{
+  content:"";
+  display:block;
+  width:clamp(26px,3.6vw,46px);
+  height:1px;
+  margin:0 0 clamp(14px,2.1vh,24px);
+  background:linear-gradient(90deg, rgba(197,219,224,.72), rgba(197,219,224,0));
+}
+.waypoint .ord{
+  display:block;
+  margin-bottom:.9em;
+  font-size:clamp(10px,1.08vw,13px);
+  font-weight:400;
+  letter-spacing:.55em;
+  color:var(--mist);
+  text-transform:none;
+}
+.waypoint h2{
+  margin:0;
+  font-family:var(--serif);
+  font-weight:500;
+  font-size:clamp(36px,5.2vw,78px);
+  line-height:1.18;
+  letter-spacing:.15em;
+  color:rgba(236,244,245,.94);
+}
+.waypoint .whisper{
+  margin:0;
+  font-family:var(--serif);
+  font-weight:400;
+  font-size:clamp(14px,1.55vw,20px);
+  line-height:1.8;
+  letter-spacing:.30em;
+  color:rgba(201,221,226,.82);
+  white-space:nowrap;
+}
+.waypoint.align-right{text-align:right}
+.waypoint.align-right::before{margin-left:auto;background:linear-gradient(270deg, rgba(197,219,224,.72), rgba(197,219,224,0))}
+.waypoint.ending{width:min(84vw,760px);text-align:center}
+.waypoint.ending::before{margin-left:auto;margin-right:auto;background:linear-gradient(90deg,transparent,rgba(205,225,229,.65),transparent)}
+.waypoint.ending h2{
+  font-size:clamp(30px,4.3vw,62px);
+  letter-spacing:.22em;
+}
+.waypoint.ending .ord{margin-bottom:1.2em}
+#date{
+  position:fixed;
+  z-index:6;
+  right:calc(env(safe-area-inset-right) + clamp(18px,4vw,58px));
+  bottom:calc(env(safe-area-inset-bottom) + clamp(20px,3.4vh,38px));
+  margin:0;
+  font-size:10px;
+  font-weight:400;
+  letter-spacing:.32em;
+  color:rgba(194,214,219,.38);
+  pointer-events:none;
+}
+#cue{
+  position:fixed;
+  z-index:6;
+  left:50%;
+  bottom:calc(env(safe-area-inset-bottom) + clamp(18px,3vh,36px));
+  transform:translateX(-50%);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:11px;
+  pointer-events:none;
+  opacity:1;
+  transition:opacity 1.1s ease, visibility 1.1s ease;
+}
+#cue .cue-word{
+  font-size:9px;
+  letter-spacing:.44em;
+  color:rgba(194,214,219,.42);
+  padding-left:.44em;
+}
+#cue .cue-line{
+  width:1px;
+  height:clamp(38px,6vh,62px);
+  background:linear-gradient(to bottom, rgba(193,218,224,0), rgba(203,225,230,.58), rgba(193,218,224,0));
+  transform-origin:center;
+  animation:cue-breathe 2.7s ease-in-out infinite;
+}
+#cue.is-gone{opacity:0;visibility:hidden}
+@keyframes cue-breathe{
+  0%,100%{transform:scaleY(.38);opacity:.22}
+  50%{transform:scaleY(1);opacity:.72}
+}
+body.mode-fallback .waypoint[data-anchor="subtitle"],
+body.reduced-layout .waypoint[data-anchor="subtitle"]{display:none}
+body.mode-fallback .waypoint[data-anchor="s1"]{left:12%;top:54%;transform:translate(-50%,-50%);text-align:left}
+body.mode-fallback .waypoint[data-anchor="s2"]{left:76%;top:50%}
+body.mode-fallback .waypoint[data-anchor="s3"]{left:31%;top:47%}
+body.mode-fallback .waypoint[data-anchor="end"]{left:50%;top:44%}
+body.reduced-layout .waypoint[data-anchor="subtitle"]{left:50%;top:70%}
+body.reduced-layout .waypoint[data-anchor="s1"]{left:17%;top:49%}
+body.reduced-layout .waypoint[data-anchor="s2"]{left:71%;top:46%}
+body.reduced-layout .waypoint[data-anchor="s3"]{left:27%;top:43%}
+body.reduced-layout .waypoint[data-anchor="end"]{left:50%;top:38%}
+body.reduced-layout .waypoint{filter:none !important}
+/* 无 JS 的静态阅读页 */
+#static-page{
+  display:none;
+  position:relative;
+  z-index:10;
+  min-height:100dvh;
+  padding:calc(env(safe-area-inset-top) + clamp(50px,10vh,120px)) calc(env(safe-area-inset-right) + clamp(24px,8vw,120px)) calc(env(safe-area-inset-bottom) + 80px) calc(env(safe-area-inset-left) + clamp(24px,8vw,120px));
+  background:
+    radial-gradient(ellipse at 74% 18%, rgba(212,230,235,.14), transparent 26%),
+    radial-gradient(ellipse at 50% 100%, rgba(150,180,190,.13), transparent 50%),
+    linear-gradient(180deg,#0e1b22 0%,#233740 48%,#0b161c 100%);
+  overflow:hidden;
+}
+html.no-js #static-page{display:block}
+html.no-js #experience,html.no-js #scene,html.no-js #fallback2d,html.no-js #scroll-space,html.no-js #cue,html.no-js #date,html.no-js #veil,html.no-js #grain{display:none}
+#static-page::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(150deg, transparent 0 48%, rgba(157,185,193,.09) 48.2%, transparent 49%),
+    repeating-linear-gradient(104deg, transparent 0 38px, rgba(205,225,229,.035) 39px, transparent 41px),
+    radial-gradient(circle at 20% 35%, rgba(223,239,242,.5) 0 1px, transparent 1.8px),
+    radial-gradient(circle at 68% 24%, rgba(223,239,242,.35) 0 1px, transparent 1.7px),
+    radial-gradient(circle at 84% 43%, rgba(223,239,242,.4) 0 1.2px, transparent 2px);
+  background-size:auto,auto,240px 210px,320px 280px,190px 230px;
+  opacity:.8;
+}
+.static-inner{position:relative;max-width:860px}
+.static-inner h1{
+  margin:0;
+  font-family:var(--serif);
+  font-weight:600;
+  font-size:clamp(72px,14vw,180px);
+  letter-spacing:.2em;
+  line-height:.9;
+  color:#e9f1f2;
+  text-shadow:0 20px 60px rgba(0,8,12,.45);
+}
+.static-inner .static-sub{
+  margin:clamp(22px,4vh,44px) 0 clamp(54px,10vh,110px);
+  font-family:var(--serif);
+  font-size:clamp(15px,1.8vw,22px);
+  letter-spacing:.34em;
+  color:#b6cbd1;
+}
+.static-season{
+  margin:0 0 clamp(22px,3.6vh,38px);
+  padding-left:clamp(14px,2.2vw,26px);
+  border-left:1px solid rgba(190,214,220,.25);
+}
+.static-season span{
+  display:block;
+  font-size:11px;
+  letter-spacing:.44em;
+  color:#92aab1;
+  margin-bottom:.8em;
+}
+.static-season strong{
+  font-family:var(--serif);
+  font-weight:500;
+  font-size:clamp(26px,3.4vw,44px);
+  letter-spacing:.16em;
+  color:#e5eef0;
+}
+.static-close{
+  margin:clamp(58px,10vh,120px) 0 0;
+  font-family:var(--serif);
+  font-size:clamp(22px,3vw,38px);
+  letter-spacing:.22em;
+  color:#dce9eb;
+}
+.static-note{
+  margin-top:clamp(48px,8vh,90px);
+  font-size:10px;
+  letter-spacing:.3em;
+  color:rgba(190,212,218,.44);
+}
+@media (max-width:720px){
+  .waypoint{width:min(84vw,440px)}
+  .waypoint h2{letter-spacing:.1em}
+  .waypoint .whisper{white-space:normal}
+  body.mode-fallback .waypoint[data-anchor="s1"]{left:28%;top:55%}
+  body.mode-fallback .waypoint[data-anchor="s2"]{left:72%;top:48%}
+  body.mode-fallback .waypoint[data-anchor="s3"]{left:40%;top:44%}
+  body.mode-fallback .waypoint[data-anchor="end"]{left:50%;top:41%}
+}
+@media (orientation:landscape) and (max-height:560px){
+  .masthead h1{font-size:clamp(46px,9vh,80px)}
+  .masthead .sub{font-size:12px;letter-spacing:.26em}
+  .waypoint{width:min(64vw,460px)}
+  .waypoint h2{font-size:clamp(28px,7vh,48px)}
+  .waypoint .ord{font-size:9px}
+  .waypoint .whisper{font-size:12px}
+  #cue .cue-line{height:30px}
+  #date{font-size:9px}
+}
+@media (prefers-reduced-motion: reduce){
+  #cue .cue-line{animation:none;transform:scaleY(.7);opacity:.4}
+  #fallback2d,#scene,.masthead,#cue{transition:none}
+  *{scroll-behavior:auto !important}
+}
+</style>
+</head>
+<body>
+<canvas id="fallback2d" aria-hidden="true"></canvas>
+<canvas id="scene" aria-hidden="true"></canvas>
+<div id="veil" aria-hidden="true"></div>
+<div id="grain" aria-hidden="true"></div>
+
+<main id="experience">
+  <header class="masthead" aria-label="立冬">
+    <h1>立冬</h1>
+    <p class="sub">十月节，水始冰，地始冻</p>
+    <span class="note">二十四节气 · 第十九</span>
+  </header>
+
+  <section id="narrative" aria-label="立冬三候">
+    <article class="waypoint" data-anchor="subtitle">
+      <p class="whisper">十月节，水始冰，地始冻</p>
+    </article>
+    <article class="waypoint" data-anchor="s1">
+      <span class="ord">一候</span>
+      <h2>水始冰</h2>
+    </article>
+    <article class="waypoint align-right" data-anchor="s2">
+      <span class="ord">二候</span>
+      <h2>地始冻</h2>
+    </article>
+    <article class="waypoint" data-anchor="s3">
+      <span class="ord">三候</span>
+      <h2>雉入大水为蜃</h2>
+    </article>
+    <article class="waypoint ending" data-anchor="end">
+      <span class="ord">立冬</span>
+      <h2>万物收藏，静待春归</h2>
+    </article>
+  </section>
+
+  <p id="date">二十四节气 · 第十九</p>
+  <div id="cue" aria-hidden="true">
+    <span class="cue-word">轻扫</span>
+    <span class="cue-line"></span>
+  </div>
+</main>
+
+<div id="scroll-space" aria-hidden="true"></div>
+
+<section id="static-page" aria-label="立冬文字版">
+  <div class="static-inner">
+    <h1>立冬</h1>
+    <p class="static-sub">十月节，水始冰，地始冻</p>
+    <div class="static-season"><span>一候</span><strong>水始冰</strong></div>
+    <div class="static-season"><span>二候</span><strong>地始冻</strong></div>
+    <div class="static-season"><span>三候</span><strong>雉入大水为蜃</strong></div>
+    <p class="static-close">万物收藏，静待春归</p>
+    <p class="static-note">二十四节气 · 第十九</p>
+  </div>
+</section>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ============================================================
+     CONFIG：配色、镜头关键帧、粒子档位、文案与散布参数集中于此处
+     ============================================================ */
+  const CONFIG = {
+    copy: {
+      title: '立冬',
+      subtitle: '十月节，水始冰，地始冻',
+      seasons: [
+        { index: '一候', text: '水始冰' },
+        { index: '二候', text: '地始冻' },
+        { index: '三候', text: '雉入大水为蜃' }
+      ],
+      closing: '万物收藏，静待春归',
+      note: '二十四节气 · 第十九'
+    },
+    colors: {
+      bg: 0x081116,
+      fog: 0x8299a4,
+      horizon: 0x8fa5ae,
+      zenith: 0x07131c,
+      moon: 0xd6e7eb,
+      star: 0xddecef,
+      aurora: 0x5c8e88,
+      iceDeep: 0x0c222d,
+      iceShallow: 0x35535e,
+      iceFrost: 0xc5d9dd,
+      snowDark: 0x7d939b,
+      snowLight: 0xcbdadd,
+      treeDark: 0x172c2a,
+      treeMid: 0x29443d,
+      treeSnow: 0xbacbce,
+      mountainLow: 0x15242b,
+      mountainHigh: 0x9caeb5,
+      warm: 0xe3a46d,
+      moonLight: 0xc7dce4
+    },
+    camera: {
+      fov: 52,
+      positions: [
+        [0, 6.6, 60],
+        [4.5, 4.3, 38],
+        [-7.5, 5.5, 8],
+        [7, 8.2, -26],
+        [0, 12.0, -58],
+        [0, 15.0, -86]
+      ],
+      looks: [
+        [0, 7.8, 18],
+        [0, 4.6, 10],
+        [-12, 3.3, -20],
+        [5, 4.4, -55],
+        [0, 7.5, -130],
+        [0, 9.0, -172]
+      ]
+    },
+    anchors: {
+      subtitle: { pos: [0, 9.0, 18], offset: [0, 0.02] },
+      s1:       { pos: [-10.5, 1.0, -2], offset: [-0.01, -0.03] },
+      s2:       { pos: [13.5, 1.1, -50], offset: [0.015, -0.015] },
+      s3:       { pos: [-16.5, 2.5, -82], offset: [-0.02, 0] },
+      end:      { pos: [0, 5.6, -172], offset: [0, 0] }
+    },
+    narrative: [
+      { anchor: 'subtitle', from: -0.02, to: 0.145 },
+      { anchor: 's1', from: 0.12, to: 0.35 },
+      { anchor: 's2', from: 0.38, to: 0.575 },
+      { anchor: 's3', from: 0.605, to: 0.79 },
+      { anchor: 'end', from: 0.815, to: 1.12 }
+    ],
+    particles: {
+      titleDesktop: 6200,
+      titleMobile: 3400,
+      titleHigh: 8000,
+      snowDesktop: 2600,
+      snowMobile: 1250,
+      snowHigh: 3400,
+      burst: 100
+    },
+    forest: {
+      countDesktop: 640,
+      countMobile: 360,
+      nearZ: -45,
+      farZ: -238,
+      spreadX: 158
+    },
+    ice: {
+      width: 172,
+      depth: 264,
+      centerZ: 28,
+      ripples: 6
+    },
+    fogDensity: 0.00235,
+    quality: {
+      maxDpr: 2,
+      mobileDpr: 1.6
+    }
+  };
+
+  const reducedMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const isMobile = !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches) || window.innerWidth < 760;
+  const isHigh = !isMobile && (navigator.hardwareConcurrency || 4) >= 8;
+
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const smoothstep = (a, b, x) => {
+    const t = clamp((x - a) / (b - a || 1e-6), 0, 1);
+    return t * t * (3 - 2 * t);
+  };
+  const damp = (a, b, lambda, dt) => lerp(a, b, 1 - Math.exp(-lambda * dt));
+  const TAU = Math.PI * 2;
+
+  function mulberry32(seed){
+    let a = seed >>> 0;
+    return function(){
+      a |= 0; a = (a + 0x6D2B79F5) | 0;
+      let t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function hashInt(x, y, seed){
+    let h = Math.imul(x | 0, 374761393) ^ Math.imul(y | 0, 668265263) ^ Math.imul(seed | 0, 1442695041);
+    h = Math.imul(h ^ (h >>> 13), 1274126177);
+    return ((h ^ (h >>> 16)) >>> 0) / 4294967295;
+  }
+  function vnoise(x, y, seed){
+    const xi = Math.floor(x), yi = Math.floor(y);
+    const xf = x - xi, yf = y - yi;
+    const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
+    const a = hashInt(xi, yi, seed), b = hashInt(xi + 1, yi, seed);
+    const c = hashInt(xi, yi + 1, seed), d = hashInt(xi + 1, yi + 1, seed);
+    return lerp(lerp(a, b, u), lerp(c, d, u), v);
+  }
+  function fbm(x, y, oct, seed){
+    let amp = 0.5, freq = 1, sum = 0, norm = 0;
+    for (let i = 0; i < oct; i++){
+      sum += amp * vnoise(x * freq, y * freq, seed + i * 17);
+      norm += amp;
+      amp *= 0.5;
+      freq *= 2.03;
+    }
+    return sum / (norm || 1);
+  }
+
+  const state = {
+    mode: 'loading',
+    webglReady: false,
+    fallbackActive: false,
+    fallbackRAF: 0,
+    webglRAF: 0,
+    scroll: 0,
+    scrollSmooth: 0,
+    pointerX: 0,
+    pointerY: 0,
+    viewW: window.innerWidth,
+    viewH: window.innerHeight,
+    lastTime: 0,
+    narrative: [],
+    hidden: false,
+    fallback: null
+  };
+
+  const dom = {
+    body: document.body,
+    scene: document.getElementById('scene'),
+    fallback: document.getElementById('fallback2d'),
+    experience: document.getElementById('experience'),
+    narrative: document.getElementById('narrative'),
+    waypoints: {},
+    cue: document.getElementById('cue'),
+    date: document.getElementById('date'),
+    grain: document.getElementById('grain')
+  };
+
+  state.narrative = CONFIG.narrative.map(item => {
+    const el = document.querySelector('[data-anchor="' + item.anchor + '"]');
+    dom.waypoints[item.anchor] = el;
+    return { ...item, el, opacity: 0 };
+  });
+
+  /* 用 CONFIG 统一文案，避免正文内容散落 */
+  (function applyCopy(){
+    const mast = document.querySelector('.masthead');
+    if (mast){
+      mast.querySelector('h1').textContent = CONFIG.copy.title;
+      mast.querySelector('.sub').textContent = CONFIG.copy.subtitle;
+      mast.querySelector('.note').textContent = CONFIG.copy.note;
+    }
+    const articles = document.querySelectorAll('.waypoint');
+    if (articles[0]) articles[0].querySelector('.whisper').textContent = CONFIG.copy.subtitle;
+    for (let i = 0; i < 3; i++){
+      const el = articles[i + 1];
+      if (!el) continue;
+      el.querySelector('.ord').textContent = CONFIG.copy.seasons[i].index;
+      el.querySelector('h2').textContent = CONFIG.copy.seasons[i].text;
+    }
+    const end = document.querySelector('.waypoint.ending');
+    if (end) end.querySelector('h2').textContent = CONFIG.copy.closing;
+    dom.date.textContent = CONFIG.copy.note;
+    document.title = CONFIG.copy.title + ' · 十月节';
+  })();
+
+  /* 生成轻微胶片颗粒，不依赖外部图片 */
+  (function buildGrain(){
+    try{
+      const c = document.createElement('canvas');
+      c.width = 96; c.height = 96;
+      const ctx = c.getContext('2d');
+      const img = ctx.createImageData(96, 96);
+      for (let i = 0; i < img.data.length; i += 4){
+        const v = 90 + Math.floor(Math.random() * 120);
+        img.data[i] = v; img.data[i + 1] = v; img.data[i + 2] = v;
+        img.data[i + 3] = 70 + Math.floor(Math.random() * 80);
+      }
+      ctx.putImageData(img, 0, 0);
+      dom.grain.style.backgroundImage = 'url(' + c.toDataURL('image/png') + ')';
+    }catch(e){}
+  })();
+
+  function setScrollProgress(){
+    const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    state.scroll = clamp(window.scrollY / max, 0, 1);
+    if (window.scrollY > 18) hideCue();
+  }
+  function hideCue(){
+    if (dom.cue && !dom.cue.classList.contains('is-gone')) dom.cue.classList.add('is-gone');
+  }
+
+  window.addEventListener('scroll', setScrollProgress, { passive: true });
+  window.addEventListener('resize', () => {
+    state.viewW = window.innerWidth;
+    state.viewH = window.innerHeight;
+    setScrollProgress();
+  }, { passive: true });
+  window.addEventListener('orientationchange', () => {
+    setTimeout(() => {
+      state.viewW = window.innerWidth;
+      state.viewH = window.innerHeight;
+      setScrollProgress();
+    }, 180);
+  });
+
+  /* 方向键推进叙事，不出现任何控件 */
+  window.addEventListener('keydown', (e) => {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    const tag = (e.target && e.target.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+    const h = window.innerHeight;
+    if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' '){
+      e.preventDefault();
+      window.scrollBy({ top: h * 0.58, behavior: reducedMotion ? 'auto' : 'smooth' });
+    } else if (e.key === 'ArrowUp' || e.key === 'PageUp'){
+      e.preventDefault();
+      window.scrollBy({ top: -h * 0.58, behavior: reducedMotion ? 'auto' : 'smooth' });
+    } else if (e.key === 'Home'){
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
+    } else if (e.key === 'End'){
+      e.preventDefault();
+      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: reducedMotion ? 'auto' : 'smooth' });
+    }
+  }, { passive: false });
+
+  setTimeout(hideCue, 2400);
+
+  function narrativeWeight(item, p){
+    const a = item.from, b = item.to;
+    const edge = 0.018;
+    const inW = smoothstep(a - edge, a + edge, p);
+    const outW = 1 - smoothstep(b - edge, b + edge, p);
+    return clamp(inW * outW, 0, 1);
+  }
+
+  /* 无 WebGL 时的文字路径：固定版面 + 滚动淡入 */
+  function updateFixedLabels(p){
+    for (const item of state.narrative){
+      const w = narrativeWeight(item, p);
+      item.opacity = w;
+      const el = item.el;
+      if (!el) continue;
+      el.style.opacity = w.toFixed(3);
+      if (reducedMotion){
+        el.style.transform = 'translate(-50%,-50%)';
+        el.style.filter = 'none';
+      } else {
+        const y = (1 - w) * 15;
+        const s = 0.988 + w * 0.012;
+        el.style.transform = 'translate(-50%,-50%) translate3d(0,' + y.toFixed(2) + 'px,0) scale(' + s.toFixed(4) + ')';
+        el.style.filter = 'blur(' + ((1 - w) * 2.4).toFixed(2) + 'px)';
+      }
+    }
+  }
+
+  /* ============================================================
+     2D 降级场景：CDN 未就绪时立即呈现，避免白屏
+     ============================================================ */
+  function startFallback(){
+    if (state.fallbackActive) return;
+    state.fallbackActive = true;
+    state.mode = 'fallback';
+    dom.body.classList.remove('mode-webgl');
+    dom.body.classList.add('mode-fallback');
+    if (reducedMotion) dom.body.classList.add('reduced-layout');
+    const canvas = dom.fallback;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    const fb = {
+      ctx, w: window.innerWidth, h: window.innerHeight, dpr: Math.min(window.devicePixelRatio || 1, 1.6),
+      flakes: [], stars: [], mouseX: 0, mouseY: 0, t: 0, raf: 0
+    };
+    state.fallback = fb;
+    const rnd = mulberry32(20261107);
+
+    function resize(){
+      fb.w = Math.max(320, window.innerWidth);
+      fb.h = Math.max(320, window.innerHeight);
+      canvas.width = Math.floor(fb.w * fb.dpr);
+      canvas.height = Math.floor(fb.h * fb.dpr);
+      canvas.style.width = fb.w + 'px';
+      canvas.style.height = fb.h + 'px';
+      fb.stars = [];
+      for (let i = 0; i < 70; i++){
+        fb.stars.push({ x: rnd(), y: rnd() * .55, r: .3 + rnd() * 1.1, a: .2 + rnd() * .6, ph: rnd() * TAU });
+      }
+      fb.flakes = [];
+      const n = reducedMotion ? 90 : (fb.w < 700 ? 140 : 220);
+      for (let i = 0; i < n; i++){
+        fb.flakes.push({
+          x: rnd(), y: rnd(), z: .25 + rnd() * .75,
+          r: .35 + rnd() * 1.7, speed: .008 + rnd() * .025,
+          sway: rnd() * TAU, drift: .2 + rnd() * .6
+        });
+      }
+    }
+    resize();
+    const onResize = () => resize();
+    window.addEventListener('resize', onResize);
+
+    function ridgeY(x, base, amp, seed, offset){
+      const t = x / fb.w;
+      return base - amp * (0.22 + 0.78 * Math.pow(fbm(t * 4.2 + seed, offset * 2.3, 4, seed), 1.3))
+        - amp * 0.18 * Math.sin(t * 17 + seed * 4);
+    }
+    function drawRidge(base, amp, seed, offset, colorA, colorB){
+      const g = ctx.createLinearGradient(0, base - amp, 0, fb.h);
+      g.addColorStop(0, colorA); g.addColorStop(1, colorB);
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.moveTo(-10, fb.h);
+      for (let x = -10; x <= fb.w + 10; x += 8){
+        ctx.lineTo(x, ridgeY(x, base, amp, seed, offset));
+      }
+      ctx.lineTo(fb.w + 10, fb.h);
+      ctx.closePath();
+      ctx.fill();
+    }
+    function drawCabin(px, py, scale){
+      ctx.save();
+      ctx.translate(px, py);
+      ctx.scale(scale, scale);
+      ctx.fillStyle = '#1b2a30';
+      ctx.fillRect(-9, -8, 18, 10);
+      ctx.beginPath();
+      ctx.moveTo(-12, -8); ctx.lineTo(0, -17); ctx.lineTo(12, -8); ctx.closePath();
+      ctx.fillStyle = '#53666c'; ctx.fill();
+      const glow = ctx.createRadialGradient(3, -3, 0, 3, -3, 22);
+      glow.addColorStop(0, 'rgba(227,164,109,.50)');
+      glow.addColorStop(.22, 'rgba(227,164,109,.18)');
+      glow.addColorStop(1, 'rgba(227,164,109,0)');
+      ctx.fillStyle = glow;
+      ctx.fillRect(-22, -25, 50, 46);
+      ctx.fillStyle = 'rgba(243,190,132,.92)';
+      ctx.fillRect(2, -5, 3.5, 4.5);
+      ctx.restore();
+    }
+
+    function draw(time){
+      const p = state.scroll;
+      const mX = state.pointerX, mY = state.pointerY;
+      const W = fb.w, H = fb.h;
+      ctx.setTransform(fb.dpr, 0, 0, fb.dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+
+      const sky = ctx.createLinearGradient(0, 0, 0, H * .72);
+      sky.addColorStop(0, '#0b1922');
+      sky.addColorStop(.42, '#314a55');
+      sky.addColorStop(.68, '#7a939d');
+      sky.addColorStop(1, '#a9bbc0');
+      ctx.fillStyle = sky;
+      ctx.fillRect(0, 0, W, H);
+
+      const moonX = W * .24 - mX * 12;
+      const moonY = H * .22 - mY * 8;
+      const halo = ctx.createRadialGradient(moonX, moonY, 0, moonX, moonY, H * .28);
+      halo.addColorStop(0, 'rgba(223,238,241,.36)');
+      halo.addColorStop(.18, 'rgba(210,229,234,.12)');
+      halo.addColorStop(1, 'rgba(210,229,234,0)');
+      ctx.fillStyle = halo;
+      ctx.fillRect(0, 0, W, H);
+      ctx.beginPath();
+      ctx.arc(moonX, moonY, Math.max(13, H * .018), 0, TAU);
+      ctx.fillStyle = 'rgba(230,242,244,.86)';
+      ctx.fill();
+
+      ctx.save();
+      for (const s of fb.stars){
+        const a = s.a * (.6 + .4 * Math.sin(time * .0007 + s.ph));
+        ctx.globalAlpha = a;
+        ctx.fillStyle = '#e2f0f2';
+        ctx.beginPath();
+        ctx.arc(s.x * W - mX * 4, s.y * H - mY * 3, s.r, 0, TAU);
+        ctx.fill();
+      }
+      ctx.restore();
+
+      const shift = p * H * .10;
+      drawRidge(H * .58 + shift * .22, H * .075, 8, 0.2, 'rgba(102,127,136,.55)', 'rgba(63,86,95,.55)');
+      drawRidge(H * .655 + shift * .38, H * .105, 3, 1.1, 'rgba(73,97,106,.8)', 'rgba(40,60,68,.8)');
+      drawRidge(H * .74 + shift * .62, H * .12, 11, 2.2, 'rgba(40,60,69,.96)', 'rgba(20,34,41,.96)');
+
+      // 中景针叶林剪影
+      ctx.save();
+      ctx.translate(0, shift * .78);
+      const treeBase = H * .745;
+      const rndT = mulberry32(913 + Math.floor(p * 20));
+      ctx.fillStyle = 'rgba(19,35,38,.92)';
+      for (let i = 0; i < 105; i++){
+        const x = (i / 104) * (W + 80) - 40 + (rndT() - .5) * 12;
+        const h = (H * .028) + rndT() * H * .075;
+        const w = h * (.34 + rndT() * .18);
+        ctx.beginPath();
+        ctx.moveTo(x, treeBase - h);
+        ctx.lineTo(x - w * .5, treeBase);
+        ctx.lineTo(x + w * .5, treeBase);
+        ctx.closePath();
+        ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(x, treeBase - h * .57);
+        ctx.lineTo(x - w * .72, treeBase - h * .18);
+        ctx.lineTo(x + w * .72, treeBase - h * .18);
+        ctx.closePath();
+        ctx.fill();
+      }
+      ctx.restore();
+
+      drawCabin(W * .775 - mX * 18, H * .603 + shift * .34, Math.max(.85, H / 720));
+
+      // 冰湖的暗面与反光
+      const lake = ctx.createLinearGradient(0, H * .72, 0, H);
+      lake.addColorStop(0, 'rgba(85,111,120,.35)');
+      lake.addColorStop(.2, 'rgba(34,59,68,.92)');
+      lake.addColorStop(1, '#0b1a21');
+      ctx.fillStyle = lake;
+      ctx.fillRect(0, H * .72 + shift * .55, W, H);
+      ctx.save();
+      ctx.globalAlpha = .34;
+      const refl = ctx.createLinearGradient(0, H * .72, 0, H * .93);
+      refl.addColorStop(0, 'rgba(199,221,226,.32)');
+      refl.addColorStop(.45, 'rgba(135,164,173,.10)');
+      refl.addColorStop(1, 'rgba(20,40,49,0)');
+      ctx.fillStyle = refl;
+      ctx.beginPath();
+      ctx.ellipse(W * .5, H * .86, W * .34, H * .10, 0, 0, TAU);
+      ctx.fill();
+      ctx.restore();
+
+      // 冰面裂纹与风蚀线
+      ctx.save();
+      ctx.globalAlpha = .16;
+      ctx.strokeStyle = '#d3e5e8';
+      ctx.lineWidth = .7;
+      const crnd = mulberry32(7721);
+      for (let i = 0; i < 20; i++){
+        let x = crnd() * W, y = H * (.74 + crnd() * .24);
+        ctx.beginPath(); ctx.moveTo(x, y);
+        for (let k = 0; k < 3; k++){
+          x += (crnd() - .5) * W * .13;
+          y += (crnd() - .2) * H * .035;
+          ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      // 雪粒（低配 Canvas2D 视差）
+      if (!reducedMotion){
+        fb.t += 1;
+        for (const f of fb.flakes){
+          f.y += f.speed * .006 * (1 + p * 1.4);
+          if (f.y > 1.03){ f.y = -.04; f.x = Math.random(); }
+          const x = (f.x + Math.sin(time * .0005 + f.sway) * .006 + p * f.drift * .03) * W;
+          const y = f.y * H;
+          const alpha = .14 + f.z * .55;
+          ctx.globalAlpha = alpha;
+          ctx.fillStyle = '#e9f3f4';
+          ctx.beginPath();
+          ctx.arc(x, y, f.r * f.z * (fb.w < 700 ? .8 : 1.1), 0, TAU);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    function loop(now){
+      if (!state.fallbackActive) return;
+      if (!document.hidden){
+        draw(now);
+        updateFixedLabels(state.scroll);
+      }
+      fb.raf = requestAnimationFrame(loop);
+    }
+    fb.draw = draw;
+    if (reducedMotion){
+      draw(0);
+      updateFixedLabels(state.scroll);
+      const onScroll = () => updateFixedLabels(state.scroll);
+      window.addEventListener('scroll', onScroll, { passive: true });
+      fb.dispose = () => {
+        window.removeEventListener('resize', onResize);
+        window.removeEventListener('scroll', onScroll);
+      };
+    } else {
+      fb.raf = requestAnimationFrame(loop);
+      fb.dispose = () => {
+        cancelAnimationFrame(fb.raf);
+        window.removeEventListener('resize', onResize);
+      };
+    }
+    setScrollProgress();
+  }
+
+  function stopFallback(){
+    if (!state.fallback) return;
+    state.fallbackActive = false;
+    if (state.fallback.dispose) state.fallback.dispose();
+    state.fallback = null;
+  }
+
+  /* ============================================================
+     three.js 场景
+     ============================================================ */
+  const NOISE_GLSL = `
+    float hash21(vec2 p){
+      p = fract(p * vec2(123.34, 456.21));
+      p += dot(p, p + 45.32);
+      return fract(p.x * p.y);
+    }
+    vec2 hash22(vec2 p){
+      p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)));
+      return fract(sin(p) * 43758.5453123);
+    }
+    float noise21(vec2 p){
+      vec2 i = floor(p), f = fract(p);
+      f = f * f * (3.0 - 2.0 * f);
+      return mix(mix(hash21(i), hash21(i + vec2(1.0, 0.0)), f.x),
+                 mix(hash21(i + vec2(0.0, 1.0)), hash21(i + vec2(1.0, 1.0)), f.x), f.y);
+    }
+    float fbm21(vec2 p){
+      float s = 0.0, a = 0.5;
+      for (int i = 0; i < 5; i++){
+        s += a * noise21(p);
+        p = p * 2.03 + vec2(13.7, 7.1);
+        a *= 0.5;
+      }
+      return s;
+    }
+    float voronoiEdge(vec2 p){
+      vec2 n = floor(p), f = fract(p);
+      float d1 = 8.0, d2 = 8.0;
+      for (int j = -1; j <= 1; j++){
+        for (int i = -1; i <= 1; i++){
+          vec2 g = vec2(float(i), float(j));
+          vec2 o = hash22(n + g);
+          vec2 r = g + o - f;
+          float d = dot(r, r);
+          if (d < d1){ d2 = d1; d1 = d; }
+          else if (d < d2){ d2 = d; }
+        }
+      }
+      return sqrt(d2) - sqrt(d1);
+    }
+  `;
+
+  function initWebGL(){
+    if (state.webglReady) return;
+    if (!window.THREE) return;
+    const THREE = window.THREE;
+    let renderer;
+    try{
+      renderer = new THREE.WebGLRenderer({
+        canvas: dom.scene,
+        antialias: true,
+        alpha: false,
+        powerPreference: 'high-performance'
+      });
+    }catch(e){
+      startFallback();
+      return;
+    }
+    const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? CONFIG.quality.mobileDpr : CONFIG.quality.maxDpr);
+    renderer.setPixelRatio(dpr);
+    renderer.setSize(window.innerWidth, window.innerHeight, false);
+    renderer.setClearColor(CONFIG.colors.bg, 1);
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 0.82;
+    renderer.shadowMap.enabled = false;
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(CONFIG.colors.fog, CONFIG.fogDensity);
+
+    const camera = new THREE.PerspectiveCamera(CONFIG.camera.fov, window.innerWidth / window.innerHeight, 0.08, 760);
+    camera.position.set(0, 6.6, 60);
+
+    const clock = new THREE.Clock();
+    const rnd = mulberry32(20261107);
+    const shared = {
+      scene, camera, renderer, THREE, clock, dpr,
+      uPixelScale: 1,
+      iceUniforms: null,
+      raycaster: new THREE.Raycaster(),
+      plane: new THREE.Plane(new THREE.Vector3(0, 1, 0), -0.03),
+      ripples: [],
+      rippleIndex: 0,
+      burst: null,
+      title: null,
+      snow: null,
+      mist: [],
+      cabinGlow: null,
+      elapsed: 0,
+      orbit: { yaw: 0, pitch: 0, targetYaw: 0, targetPitch: 0, dragging: false, lastX: 0, lastY: 0, downX: 0, downY: 0, downT: 0, moved: 0 },
+      lastInteraction: -10,
+      reduced: reducedMotion
+    };
+    state.three = shared;
+
+    function canvasTexture(canvas, srgb){
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+      tex.anisotropy = Math.min(4, renderer.capabilities.getMaxAnisotropy());
+      if (srgb !== false && THREE.sRGBEncoding) tex.encoding = THREE.sRGBEncoding;
+      return tex;
+    }
+
+    /* ---------- 天空：渐变 + 星点 + 弱极光 ---------- */
+    (function createSky(){
+      const geo = new THREE.SphereGeometry(620, 48, 28);
+      const mat = new THREE.ShaderMaterial({
+        side: THREE.BackSide,
+        depthWrite: false,
+        toneMapped: false,
+        uniforms: {
+          uTop: { value: new THREE.Color(CONFIG.colors.zenith) },
+          uHorizon: { value: new THREE.Color(CONFIG.colors.horizon) },
+          uFog: { value: new THREE.Color(CONFIG.colors.fog) },
+          uMoon: { value: new THREE.Color(CONFIG.colors.moon) },
+          uStar: { value: new THREE.Color(CONFIG.colors.star) },
+          uAurora: { value: new THREE.Color(CONFIG.colors.aurora) },
+          uMoonDir: { value: new THREE.Vector3(-0.56, 0.34, -1).normalize() },
+          uTime: { value: 0 }
+        },
+        vertexShader: `
+          varying vec3 vDir;
+          void main(){
+            vDir = normalize(position);
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: NOISE_GLSL + `
+          uniform vec3 uTop, uHorizon, uFog, uMoon, uStar, uAurora;
+          uniform vec3 uMoonDir;
+          uniform float uTime;
+          varying vec3 vDir;
+          void main(){
+            vec3 d = normalize(vDir);
+            float h = clamp(d.y, 0.0, 1.0);
+            vec3 col = mix(uHorizon, uTop, pow(h, 0.56));
+            col = mix(col, uFog, exp(-abs(d.y) * 15.0) * 0.30);
+
+            float md = max(dot(d, uMoonDir), 0.0);
+            float disc = smoothstep(0.99945, 0.99972, md);
+            float halo = pow(md, 120.0) * 0.20 + pow(md, 16.0) * 0.035;
+            col += uMoon * (disc * 0.85 + halo);
+
+            vec2 sph = vec2(atan(d.z, d.x) * 2.2, asin(clamp(d.y, -1.0, 1.0)) * 3.1);
+            vec2 cell = floor(sph * 185.0);
+            float sr = hash21(cell);
+            float star = step(0.9962, sr) * smoothstep(0.045, 0.32, d.y) * smoothstep(0.0, 0.55, 1.0 - h);
+            float tw = 0.70 + 0.30 * sin(uTime * 1.7 + sr * 51.0);
+            col += uStar * star * tw * 0.72;
+
+            float band = exp(-pow((d.y - 0.27 - 0.025 * sin(d.x * 3.4)) * 8.2, 2.0));
+            float curtain = fbm21(vec2(d.x * 3.8 + uTime * 0.008, d.z * 2.2));
+            float aurora = band * smoothstep(0.43, 0.83, curtain) * 0.085;
+            col += uAurora * aurora * smoothstep(-0.02, 0.18, d.y);
+
+            gl_FragColor = vec4(col, 1.0);
+          }
+        `
+      });
+      const sky = new THREE.Mesh(geo, mat);
+      sky.renderOrder = -10;
+      sky.frustumCulled = false;
+      scene.add(sky);
+      shared.sky = mat;
+    })();
+
+    /* ---------- 光照：月光为主，暖光只留在远处窗灯 ---------- */
+    scene.add(new THREE.HemisphereLight(0xaec8d2, 0x16242a, 0.66));
+    const moonLight = new THREE.DirectionalLight(0xc7dce4, 1.08);
+    moonLight.position.set(-48, 52, 35);
+    scene.add(moonLight);
+    const fill = new THREE.DirectionalLight(0x7898a5, 0.20);
+    fill.position.set(38, 18, -40);
+    scene.add(fill);
+
+    /* ---------- 程序化纹理工具 ---------- */
+    function createSnowTexture(){
+      const S = 512;
+      const c = document.createElement('canvas'); c.width = c.height = S;
+      const ctx = c.getContext('2d');
+      const img = ctx.createImageData(S, S);
+      for (let y = 0; y < S; y++){
+        for (let x = 0; x < S; x++){
+          const n = fbm(x * 0.032, y * 0.032, 4, 17);
+          const fine = fbm(x * 0.12, y * 0.12, 3, 31);
+          const streak = fbm(x * 0.018, y * 0.12, 3, 77);
+          const sparkle = hashInt(x, y, 99) > 0.982 ? 19 : 0;
+          let v = 202 + (n - 0.5) * 31 + (fine - 0.5) * 12 - (streak - 0.5) * 14 + sparkle;
+          v = clamp(v, 155, 243);
+          const i = (y * S + x) * 4;
+          img.data[i] = v * 0.92;
+          img.data[i + 1] = v * 0.98;
+          img.data[i + 2] = v;
+          img.data[i + 3] = 255;
+        }
+      }
+      ctx.putImageData(img, 0, 0);
+      return canvasTexture(c);
+    }
+    function createSnowNormal(){
+      const S = 256;
+      const c = document.createElement('canvas'); c.width = c.height = S;
+      const ctx = c.getContext('2d');
+      const img = ctx.createImageData(S, S);
+      function h(x, y){
+        return fbm(x * 0.028, y * 0.028, 4, 43) * 0.8 + fbm(x * 0.11, y * 0.11, 2, 51) * 0.2;
+      }
+      for (let y = 0; y < S; y++){
+        for (let x = 0; x < S; x++){
+          const dx = (h(x - 1, y) - h(x + 1, y)) * 2.8;
+          const dy = (h(x, y - 1) - h(x, y + 1)) * 2.8;
+          const len = Math.sqrt(dx * dx + dy * dy + 1);
+          const i = (y * S + x) * 4;
+          img.data[i] = (dx / len * 0.5 + 0.5) * 255;
+          img.data[i + 1] = (dy / len * 0.5 + 0.5) * 255;
+          img.data[i + 2] = (1 / len * 0.5 + 0.5) * 255;
+          img.data[i + 3] = 255;
+        }
+      }
+      ctx.putImageData(img, 0, 0);
+      return canvasTexture(c, false);
+    }
+    function createFootprintTexture(){
+      const S = 512;
+      const c = document.createElement('canvas'); c.width = c.height = S;
+      const ctx = c.getContext('2d');
+      ctx.clearRect(0, 0, S, S);
+      // 风吹雪留下的薄层
+      const rr = mulberry32(661);
+      for (let i = 0; i < 18; i++){
+        const x = rr() * S, y = rr() * S, rad = 20 + rr() * 70;
+        const g = ctx.createRadialGradient(x, y, 0, x, y, rad);
+        g.addColorStop(0, 'rgba(233,243,244,' + (0.035 + rr() * 0.05).toFixed(3) + ')');
+        g.addColorStop(1, 'rgba(233,243,244,0)');
+        ctx.fillStyle = g; ctx.fillRect(x - rad, y - rad, rad * 2, rad * 2);
+      }
+      // 稀疏脚印，沿一条慢弯的线
+      ctx.save();
+      ctx.translate(S * 0.54, S * 0.94);
+      for (let i = 0; i < 14; i++){
+        const yy = -i * 26;
+        const xx = Math.sin(i * 0.52) * 22 + (i % 2 ? 16 : -16);
+        ctx.save();
+        ctx.translate(xx, yy);
+        ctx.rotate(-0.16 + Math.sin(i * 0.7) * 0.14);
+        ctx.fillStyle = 'rgba(40,68,80,' + (0.22 + (i % 3) * 0.035).toFixed(3) + ')';
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 6.4, 11.7, 0, 0, TAU);
+        ctx.fill();
+        ctx.fillStyle = 'rgba(169,198,206,.10)';
+        ctx.beginPath();
+        ctx.ellipse(-1.5, -2, 3.8, 7.4, 0, 0, TAU);
+        ctx.fill();
+        ctx.restore();
+      }
+      ctx.restore();
+      // 风蚀细纹
+      ctx.globalAlpha = 0.11;
+      ctx.strokeStyle = '#d8e7e9';
+      const r2 = mulberry32(771);
+      for (let i = 0; i < 30; i++){
+        const y = r2() * S;
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.bezierCurveTo(S * .3, y + r2() * 16, S * .7, y - r2() * 20, S, y + r2() * 8);
+        ctx.lineWidth = .5 + r2() * 1.2;
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+      const tex = canvasTexture(c);
+      tex.repeat.set(1, 1);
+      return tex;
+    }
+    function createMistTexture(){
+      const S = 256;
+      const c = document.createElement('canvas'); c.width = c.height = S;
+      const ctx = c.getContext('2d');
+      const img = ctx.createImageData(S, S);
+      for (let y = 0; y < S; y++){
+        for (let x = 0; x < S; x++){
+          const nx = x / S - 0.5, ny = y / S - 0.5;
+          const radial = smoothstep(0.55, 0.05, Math.sqrt(nx * nx + ny * ny));
+          const n = fbm(x * 0.022, y * 0.022, 4, 88);
+          const wisp = smoothstep(0.34, 0.8, n);
+          const a = radial * (0.22 + wisp * 0.78);
+          const i = (y * S + x) * 4;
+          img.data[i] = 225; img.data[i + 1] = 237; img.data[i + 2] = 239;
+          img.data[i + 3] = clamp(a * 255, 0, 255);
+        }
+      }
+      ctx.putImageData(img, 0, 0);
+      return canvasTexture(c);
+    }
+    function createGlowTexture(){
+      const S = 128;
+      const c = document.createElement('canvas'); c.width = c.height = S;
+      const ctx = c.getContext('2d');
+      const g = ctx.createRadialGradient(S / 2, S / 2, 0, S / 2, S / 2, S / 2);
+      g.addColorStop(0, 'rgba(255,224,185,.95)');
+      g.addColorStop(0.12, 'rgba(247,190,132,.62)');
+      g.addColorStop(0.38, 'rgba(227,164,109,.16)');
+      g.addColorStop(1, 'rgba(227,164,109,0)');
+      ctx.fillStyle = g; ctx.fillRect(0, 0, S, S);
+      return canvasTexture(c);
+    }
+
+    const snowMap = createSnowTexture();
+    snowMap.repeat.set(28, 28);
+    const snowNormalMap = createSnowNormal();
+    snowNormalMap.repeat.set(28, 28);
+    const footprintMap = createFootprintTexture();
+    const mistMap = createMistTexture();
+    const glowMap = createGlowTexture();
+
+    /* ---------- 雪地：噪声位移 + 风蚀纹理 ---------- */
+    function snowHeight(x, z){
+      const base = -0.78
+        + (fbm(x * 0.026, z * 0.026, 4, 11) - 0.5) * 0.86
+        + (fbm(x * 0.082, z * 0.082, 3, 23) - 0.5) * 0.20;
+      // 湖岸做不规则抬升，遮住冰面与雪地的直线切口
+      const edgeZ = -53.0 + Math.sin(x * 0.072) * 3.6 + (fbm(x * 0.038, 2.0, 3, 53) - 0.5) * 7.0;
+      const land = smoothstep(edgeZ + 11.0, edgeZ - 11.0, z);
+      const bank = land * (1.16 + fbm(x * 0.06, z * 0.06, 3, 67) * 0.48);
+      return base + bank;
+    }
+    (function createSnowGround(){
+      const W = 820, D = 820;
+      const geo = new THREE.PlaneGeometry(W, D, 180, 180);
+      geo.rotateX(-Math.PI / 2);
+      const pos = geo.attributes.position;
+      const colors = new Float32Array(pos.count * 3);
+      const cLow = new THREE.Color(CONFIG.colors.snowDark);
+      const cHigh = new THREE.Color(CONFIG.colors.snowLight);
+      for (let i = 0; i < pos.count; i++){
+        const x = pos.getX(i), z = pos.getZ(i);
+        pos.setY(i, snowHeight(x, z));
+        const t = clamp(fbm(x * 0.04, z * 0.04, 3, 7) * 0.8 + 0.1, 0, 1);
+        const c = cLow.clone().lerp(cHigh, 0.35 + t * 0.5);
+        colors[i * 3] = c.r; colors[i * 3 + 1] = c.g; colors[i * 3 + 2] = c.b;
+      }
+      geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+      geo.computeVertexNormals();
+      const mat = new THREE.MeshStandardMaterial({
+        map: snowMap,
+        normalMap: snowNormalMap,
+        normalScale: new THREE.Vector2(0.55, 0.55),
+        color: 0xa7b6ba,
+        vertexColors: true,
+        roughness: 1,
+        metalness: 0,
+        flatShading: false
+      });
+      const ground = new THREE.Mesh(geo, mat);
+      ground.position.set(0, 0, -95);
+      ground.receiveShadow = false;
+      scene.add(ground);
+    })();
+
+    /* ---------- 冰湖：菲涅尔 + 裂纹 + 反射近似 + 可触碰涟漪 ---------- */
+    (function createIce(){
+      const geo = new THREE.PlaneGeometry(CONFIG.ice.width, CONFIG.ice.depth, 128, 128);
+      geo.rotateX(-Math.PI / 2);
+      const rippleArray = [];
+      for (let i = 0; i < CONFIG.ice.ripples; i++) rippleArray.push(new THREE.Vector4(0, -999, -100, 0));
+      const uniforms = {
+        uTime: { value: 0 },
+        uRipples: { value: rippleArray },
+        uDeep: { value: new THREE.Color(CONFIG.colors.iceDeep) },
+        uShallow: { value: new THREE.Color(CONFIG.colors.iceShallow) },
+        uFrost: { value: new THREE.Color(CONFIG.colors.iceFrost) },
+        uHorizon: { value: new THREE.Color(CONFIG.colors.horizon) },
+        uZenith: { value: new THREE.Color(CONFIG.colors.zenith) },
+        uFog: { value: new THREE.Color(CONFIG.colors.fog) },
+        uMoon: { value: new THREE.Color(CONFIG.colors.moon) },
+        uLightDir: { value: new THREE.Vector3(-0.48, 0.52, 0.35).normalize() }
+      };
+      const mat = new THREE.ShaderMaterial({
+        uniforms,
+        toneMapped: false,
+        vertexShader: `
+          uniform float uTime;
+          uniform vec4 uRipples[${CONFIG.ice.ripples}];
+          varying vec3 vWorld;
+          varying vec3 vNormal;
+          varying float vDepth;
+          varying float vRipple;
+          void main(){
+            vec3 p = position;
+            float rip = 0.0;
+            for (int i = 0; i < ${CONFIG.ice.ripples}; i++){
+              float age = uTime - uRipples[i].z;
+              if (age > 0.0 && age < 4.8){
+                vec2 d2 = p.xz - uRipples[i].xy;
+                float d = length(d2);
+                float wave = sin(d * 3.15 - age * 7.2) * exp(-d * 0.16) * exp(-age * 0.68);
+                float mask = 1.0 - smoothstep(0.0, 13.0, d);
+                rip += wave * mask * uRipples[i].w;
+              }
+            }
+            p.y += rip * 0.16;
+            vec4 world = modelMatrix * vec4(p, 1.0);
+            vec4 mv = viewMatrix * world;
+            vWorld = world.xyz;
+            vNormal = normalize(mat3(modelMatrix) * normal);
+            vDepth = -mv.z;
+            vRipple = rip;
+            gl_Position = projectionMatrix * mv;
+          }
+        `,
+        fragmentShader: NOISE_GLSL + `
+          uniform float uTime;
+          uniform vec4 uRipples[${CONFIG.ice.ripples}];
+          uniform vec3 uDeep, uShallow, uFrost, uHorizon, uZenith, uFog, uMoon, uLightDir;
+          varying vec3 vWorld;
+          varying vec3 vNormal;
+          varying float vDepth;
+          varying float vRipple;
+
+          float rippleField(vec2 p){
+            float s = 0.0;
+            for (int i = 0; i < ${CONFIG.ice.ripples}; i++){
+              float age = uTime - uRipples[i].z;
+              if (age > 0.0 && age < 4.8){
+                float d = length(p - uRipples[i].xy);
+                float wave = sin(d * 3.4 - age * 7.4) * exp(-d * 0.14) * exp(-age * 0.68);
+                s += wave * (1.0 - smoothstep(0.0, 13.0, d)) * uRipples[i].w;
+              }
+            }
+            return s;
+          }
+
+          void main(){
+            vec3 N = normalize(vNormal);
+            vec3 V = normalize(cameraPosition - vWorld);
+            vec2 uv = vWorld.xz;
+
+            float macro = fbm21(uv * 0.031 + vec2(3.2, 8.1));
+            float frost = fbm21(uv * 0.105 + vec2(11.0, 2.0));
+            vec3 base = mix(uDeep, uShallow, smoothstep(0.18, 0.78, macro * 0.55 + frost * 0.45));
+            base = mix(base, uFrost, smoothstep(0.63, 0.91, frost) * 0.24);
+
+            vec2 warp = vec2(fbm21(uv * 0.09), fbm21(uv * 0.09 + 8.7)) - 0.5;
+            float edge1 = voronoiEdge(uv * 0.092 + warp * 0.52);
+            float edge2 = voronoiEdge(uv * 0.255 + warp * 0.30 + 17.0);
+            float crack1 = 1.0 - smoothstep(0.002, 0.018, edge1);
+            float crack2 = 1.0 - smoothstep(0.0015, 0.015, edge2);
+            float crackMask = smoothstep(0.40, 0.76, fbm21(uv * 0.024 + 4.1));
+            float cracks = (crack1 * 0.68 + crack2 * 0.32) * (0.08 + crackMask * 0.92);
+            base = mix(base, uFrost * 1.05, cracks * 0.22);
+
+            float dust = smoothstep(0.58, 0.78, fbm21(uv * 0.047 + 12.0));
+            base = mix(base, uFrost, dust * 0.20);
+            float wind = smoothstep(0.66, 0.86, fbm21(uv * vec2(0.035, 0.28) + 7.0));
+            base = mix(base, uFrost, wind * 0.10);
+            float shore = smoothstep(0.68, 0.97, abs(uv.x) / 84.0)
+                        + smoothstep(0.80, 1.0, abs(uv.y - 50.0) / 104.0);
+            base = mix(base, uFrost, clamp(shore, 0.0, 1.0) * 0.11);
+            base *= 0.92 + 0.10 * noise21(uv * 1.3);
+
+            vec3 R = reflect(-V, N);
+            vec3 refl = mix(uHorizon, uZenith, pow(clamp(R.y, 0.0, 1.0), 0.62));
+            refl = mix(refl, uFog, 0.10);
+            float fresnel = pow(1.0 - max(dot(N, V), 0.0), 4.2);
+            float graze = pow(1.0 - max(dot(N, V), 0.0), 1.5);
+            vec3 col = mix(base, refl, clamp(0.05 + fresnel * 0.66 + graze * 0.12, 0.0, 0.8));
+
+            vec3 H = normalize(uLightDir + V);
+            float spec = pow(max(dot(N, H), 0.0), 115.0);
+            float broad = pow(max(dot(N, H), 0.0), 18.0);
+            col += uMoon * (spec * 0.42 + broad * 0.035);
+
+            float rings = abs(rippleField(uv));
+            col += uFrost * smoothstep(0.020, 0.32, rings) * 0.13;
+            col += uFrost * max(vRipple, 0.0) * 0.10;
+            col += uFrost * fresnel * 0.055;
+
+            // 月光的碎冰反光带，仍然是冷色
+            float moonPath = exp(-pow((uv.x + 29.0) * 0.055, 2.0));
+            float shimmer = smoothstep(0.58, 0.90, fbm21(uv * vec2(0.14, 0.52) + uTime * 0.012));
+            col += uMoon * moonPath * shimmer * 0.10;
+            col *= 0.88 + 0.12 * noise21(uv * 2.7 + uTime * 0.01);
+
+            float fogF = 1.0 - exp(-pow(vDepth * 0.0034, 2.0) * 1.9);
+            col = mix(col, uFog, clamp(fogF, 0.0, 0.93));
+            gl_FragColor = vec4(col, 1.0);
+          }
+        `
+      });
+      const ice = new THREE.Mesh(geo, mat);
+      ice.position.set(0, 0.03, CONFIG.ice.centerZ);
+      scene.add(ice);
+      shared.ice = ice;
+      shared.iceUniforms = uniforms;
+
+      // 雪尘与脚印，贴在冰面与岸线附近
+      const decalMat = new THREE.MeshBasicMaterial({
+        map: footprintMap,
+        transparent: true,
+        opacity: 0.52,
+        depthWrite: false,
+        color: 0x9cb4ba,
+        side: THREE.DoubleSide,
+        polygonOffset: true,
+        polygonOffsetFactor: -2
+      });
+      const decalGeo = new THREE.PlaneGeometry(22, 22);
+      decalGeo.rotateX(-Math.PI / 2);
+      const d1 = new THREE.Mesh(decalGeo, decalMat);
+      d1.position.set(-24, 0.075, -21);
+      d1.rotation.y = 0.35;
+      scene.add(d1);
+      const d2 = new THREE.Mesh(decalGeo, decalMat);
+      d2.position.set(31, 0.075, -38);
+      d2.rotation.y = -0.6;
+      d2.scale.set(0.7, 0.7, 0.7);
+      scene.add(d2);
+    })();
+
+    /* ---------- 松树几何：锥体堆叠 + 噪声扰动 + 积雪顶点色 ---------- */
+    function createPineGeometry(seed){
+      const rr = mulberry32(seed);
+      const positions = [], colors = [], indices = [];
+      let vi = 0;
+      const dark = new THREE.Color(CONFIG.colors.treeDark);
+      const mid = new THREE.Color(CONFIG.colors.treeMid);
+      const snow = new THREE.Color(CONFIG.colors.treeSnow);
+      const trunkCol = new THREE.Color(0x3b4647);
+
+      function tri(a, b, c, ca, cb, cc){
+        positions.push(a[0], a[1], a[2], b[0], b[1], b[2], c[0], c[1], c[2]);
+        colors.push(ca.r, ca.g, ca.b, cb.r, cb.g, cb.b, cc.r, cc.g, cc.b);
+        indices.push(vi, vi + 1, vi + 2);
+        vi += 3;
+      }
+
+      // 树干：四棱柱
+      const tr = 0.16, th = 2.6;
+      for (let s = 0; s < 4; s++){
+        const a0 = s / 4 * TAU, a1 = (s + 1) / 4 * TAU;
+        const p0 = [Math.cos(a0) * tr, 0, Math.sin(a0) * tr];
+        const p1 = [Math.cos(a1) * tr, 0, Math.sin(a1) * tr];
+        const p2 = [Math.cos(a0) * tr * 0.55, th, Math.sin(a0) * tr * 0.55];
+        const p3 = [Math.cos(a1) * tr * 0.55, th, Math.sin(a1) * tr * 0.55];
+        const c0 = trunkCol.clone().multiplyScalar(0.76 + rr() * 0.15);
+        tri(p0, p2, p1, c0, c0, c0);
+        tri(p1, p2, p3, c0, c0, c0);
+      }
+
+      // 六层锥体树枝，半径与位置带轻微噪声扰动
+      const tiers = 6;
+      for (let t = 0; t < tiers; t++){
+        const y0 = 1.12 + t * 1.02;
+        const h = 2.36 - t * 0.16;
+        const radius = 2.25 * Math.pow(0.815, t);
+        const seg = 7;
+        const ring = [];
+        for (let i = 0; i < seg; i++){
+          const a = i / seg * TAU + (rr() - 0.5) * 0.12;
+          const rad = radius * (0.82 + rr() * 0.34);
+          ring.push([Math.cos(a) * rad, y0 + (rr() - 0.5) * 0.10, Math.sin(a) * rad]);
+        }
+        const apex = [(rr() - 0.5) * 0.12, y0 + h, (rr() - 0.5) * 0.12];
+        for (let i = 0; i < seg; i++){
+          const a = ring[i], b = ring[(i + 1) % seg];
+          const snowFace = rr() > (0.92 - t * 0.022);
+          const cBase = dark.clone().lerp(mid, 0.16 + rr() * 0.35);
+          const cTip = (snowFace ? snow : dark.clone().lerp(snow, 0.10 + t * 0.075)).clone();
+          const cA = cBase.clone().lerp(snow, 0.020 + rr() * 0.060);
+          const cB = cBase.clone().lerp(snow, 0.020 + rr() * 0.060);
+          // 每个面从底部深色过渡到枝梢积雪
+          tri(a, apex, b, cA, cTip, cB);
+        }
+        // 枝层底部的暗面
+        const center = [0, y0 - 0.035, 0];
+        const cUnd = dark.clone().multiplyScalar(0.82);
+        for (let i = 0; i < seg; i++){
+          const a = ring[i], b = ring[(i + 1) % seg];
+          tri(a, center, b, cUnd, cUnd, cUnd);
+        }
+      }
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+      geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+      geo.setIndex(indices);
+      geo.computeVertexNormals();
+      return geo;
+    }
+
+    (function createForest(){
+      const count = isMobile ? CONFIG.forest.countMobile : CONFIG.forest.countDesktop;
+      const geo = createPineGeometry(4117);
+      const mat = new THREE.MeshStandardMaterial({
+        vertexColors: true,
+        roughness: 0.96,
+        metalness: 0,
+        flatShading: true,
+        fog: true
+      });
+      const mesh = new THREE.InstancedMesh(geo, mat, count);
+      mesh.instanceMatrix.setUsage(THREE.StaticDrawUsage);
+      const matrix = new THREE.Matrix4();
+      const quat = new THREE.Quaternion();
+      const euler = new THREE.Euler();
+      const scale = new THREE.Vector3();
+      const pos = new THREE.Vector3();
+      const color = new THREE.Color();
+      let made = 0, guard = 0;
+      while (made < count && guard < count * 30){
+        guard++;
+        let x, z, nearBand = false;
+        if (made < count * 0.15){
+          // 湖岸两侧的树，框住前景
+          const side = rnd() > 0.5 ? 1 : -1;
+          x = side * (88 + rnd() * 62);
+          z = -42 + rnd() * 160;
+        } else if (made < count * 0.77){
+          // 近中景密林：让林线有真实纵深
+          x = (rnd() * 2 - 1) * 122;
+          z = -59 - rnd() * 88;
+          nearBand = true;
+        } else {
+          x = (rnd() * 2 - 1) * CONFIG.forest.spreadX;
+          z = -146 - rnd() * 92;
+        }
+        // 给镜头路径留出中央呼吸带
+        if (z > -112 && z < -34 && Math.abs(x) < 10.5) continue;
+        // 避开窗灯小屋
+        if (Math.abs(x - 31) < 8 && Math.abs(z + 55) < 9) continue;
+        const y = snowHeight(x, z);
+        const elev = clamp(y + 0.9, 0, 2);
+        // 越高处越密，尺度也随海拔轻微增加
+        const density = fbm(x * 0.028, z * 0.028, 3, 5);
+        if (elev < 0.34 && density < 0.50 && rnd() < 0.62) continue;
+        const s = (nearBand ? (1.12 + rnd() * 0.92) : (0.78 + rnd() * 0.78)) * (0.94 + elev * 0.08);
+        const sy = s * (0.92 + rnd() * 0.22);
+        pos.set(x, y + 0.04, z);
+        euler.set(0, rnd() * TAU, (rnd() - 0.5) * 0.028);
+        quat.setFromEuler(euler);
+        scale.set(s * (0.88 + rnd() * 0.22), sy, s * (0.88 + rnd() * 0.22));
+        matrix.compose(pos, quat, scale);
+        mesh.setMatrixAt(made, matrix);
+        const tint = 0.80 + rnd() * 0.18;
+        color.setRGB(tint * 0.92, tint * 0.98, tint);
+        mesh.setColorAt(made, color);
+        made++;
+      }
+      mesh.count = made;
+      mesh.instanceMatrix.needsUpdate = true;
+      if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
+      mesh.frustumCulled = false;
+      scene.add(mesh);
+    })();
+
+    /* ---------- 湖岸雪堆：打散冰面与雪地的直线切口 ---------- */
+    (function createDrifts(){
+      const count = isMobile ? 26 : 44;
+      const geo = new THREE.SphereGeometry(1, 10, 6);
+      const mat = new THREE.MeshStandardMaterial({
+        color: 0xaebdc1,
+        roughness: 1,
+        metalness: 0,
+        flatShading: true,
+        fog: true
+      });
+      const mesh = new THREE.InstancedMesh(geo, mat, count);
+      const m = new THREE.Matrix4();
+      const q = new THREE.Quaternion();
+      const e = new THREE.Euler();
+      const p = new THREE.Vector3();
+      const s = new THREE.Vector3();
+      const cr = mulberry32(5511);
+      for (let i = 0; i < count; i++){
+        const x = (cr() * 2 - 1) * 102;
+        const edgeZ = -52.0 + Math.sin(x * 0.072) * 3.6 + (fbm(x * 0.038, 2.0, 3, 53) - 0.5) * 7.0;
+        const z = edgeZ - 1.0 - cr() * 9.0;
+        const y = snowHeight(x, z) - 0.12;
+        p.set(x, y, z);
+        e.set(0, cr() * TAU, (cr() - 0.5) * 0.12);
+        q.setFromEuler(e);
+        s.set(3.8 + cr() * 8.5, 0.72 + cr() * 1.15, 2.2 + cr() * 4.8);
+        m.compose(p, q, s);
+        mesh.setMatrixAt(i, m);
+      }
+      mesh.instanceMatrix.needsUpdate = true;
+      mesh.frustumCulled = false;
+      scene.add(mesh);
+    })();
+
+    /* ---------- 远山：多层噪声高度场 ---------- */
+    function createMountainRange(config){
+      const geo = new THREE.PlaneGeometry(config.width, config.depth, 112, 44);
+      geo.rotateX(-Math.PI / 2);
+      const pos = geo.attributes.position;
+      const colors = new Float32Array(pos.count * 3);
+      const low = new THREE.Color(CONFIG.colors.mountainLow);
+      const high = new THREE.Color(CONFIG.colors.mountainHigh);
+      for (let i = 0; i < pos.count; i++){
+        const x = pos.getX(i), z = pos.getZ(i);
+        const n1 = fbm(x * 0.012 + config.seed * 0.71, z * 0.012 + config.seed * 0.39, 4, config.seed);
+        const n2 = fbm(x * 0.045 + 9.0, z * 0.034 + 4.0, 3, config.seed + 7);
+        const ridge = Math.pow(1 - Math.abs(n1 * 2 - 1), 1.25);
+        const envelope = Math.sin(Math.PI * clamp(z / config.depth + 0.5, 0, 1));
+        const h = config.base + config.height * (0.12 + ridge * 0.88) * (0.30 + envelope * 0.70) * (0.82 + n2 * 0.26);
+        pos.setY(i, h);
+        const snow = smoothstep(0.34, 0.78, h / (config.height + config.base) + (n2 - 0.5) * 0.24);
+        const c = low.clone().lerp(high, snow * 0.78);
+        colors[i * 3] = c.r; colors[i * 3 + 1] = c.g; colors[i * 3 + 2] = c.b;
+      }
+      geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+      geo.computeVertexNormals();
+      const mat = new THREE.MeshStandardMaterial({
+        vertexColors: true,
+        roughness: 1,
+        metalness: 0,
+        flatShading: true,
+        fog: true
+      });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.position.set(0, -2.2, config.z);
+      mesh.frustumCulled = false;
+      scene.add(mesh);
+    }
+    createMountainRange({ z: -242, width: 360, depth: 120, height: 30, base: 0.2, seed: 3 });
+    createMountainRange({ z: -338, width: 520, depth: 160, height: 50, base: 0.1, seed: 8 });
+    createMountainRange({ z: -448, width: 680, depth: 200, height: 68, base: 0.0, seed: 15 });
+
+    /* ---------- 窗灯：全画面唯一暖色 ---------- */
+    (function createCabin(){
+      const group = new THREE.Group();
+      const baseY = snowHeight(31, -55) + 0.1;
+      const bodyMat = new THREE.MeshStandardMaterial({ color: 0x29373a, roughness: 1, metalness: 0 });
+      const roofMat = new THREE.MeshStandardMaterial({ color: 0x75878b, roughness: 1, metalness: 0 });
+      const body = new THREE.Mesh(new THREE.BoxGeometry(5.4, 2.8, 4.2), bodyMat);
+      body.position.y = 1.4;
+      group.add(body);
+      const roof = new THREE.Mesh(new THREE.ConeGeometry(4.3, 2.0, 4), roofMat);
+      roof.position.y = 3.65;
+      roof.rotation.y = Math.PI / 4;
+      group.add(roof);
+      const windowMat = new THREE.MeshBasicMaterial({ color: 0xf0b47c, toneMapped: false });
+      const win = new THREE.Mesh(new THREE.PlaneGeometry(0.9, 0.8), windowMat);
+      win.position.set(1.1, 1.55, 2.115);
+      group.add(win);
+
+      const glowMat = new THREE.SpriteMaterial({
+        map: glowMap,
+        color: new THREE.Color(CONFIG.colors.warm),
+        transparent: true,
+        opacity: 0.76,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending
+      });
+      const glow = new THREE.Sprite(glowMat);
+      glow.position.set(1.1, 1.55, 2.2);
+      glow.scale.set(5.5, 5.5, 1);
+      group.add(glow);
+      shared.cabinGlow = glow;
+
+      const warm = new THREE.PointLight(CONFIG.colors.warm, 1.15, 18, 2);
+      warm.position.set(1.2, 1.6, 2.5);
+      group.add(warm);
+
+      group.position.set(31, baseY, -55);
+      group.rotation.y = -0.32;
+      scene.add(group);
+    })();
+
+    /* ---------- 体积雾片：程序化 Canvas 云纹 ---------- */
+    (function createMist(){
+      const specs = [
+        { z: -48, y: 3.7, w: 180, h: 20, o: .14, drift: 1.1 },
+        { z: -92, y: 7.0, w: 260, h: 34, o: .11, drift: -0.7 },
+        { z: -145, y: 12.0, w: 360, h: 48, o: .13, drift: 0.45 },
+        { z: -215, y: 20.0, w: 500, h: 64, o: .11, drift: -0.3 }
+      ];
+      for (const s of specs){
+        const mat = new THREE.MeshBasicMaterial({
+          map: mistMap,
+          transparent: true,
+          opacity: s.o,
+          depthWrite: false,
+          color: 0xc1d2d7,
+          side: THREE.DoubleSide,
+          fog: false
+        });
+        const mesh = new THREE.Mesh(new THREE.PlaneGeometry(s.w, s.h), mat);
+        mesh.position.set(0, s.y, s.z);
+        mesh.renderOrder = 2;
+        mesh.userData.baseX = 0;
+        mesh.userData.drift = s.drift;
+        mesh.userData.phase = rnd() * TAU;
+        scene.add(mesh);
+        shared.mist.push(mesh);
+      }
+    })();
+
+    /* ---------- 粒子文字：Canvas 采样「立冬」 ---------- */
+    (function createTitleParticles(){
+      const text = CONFIG.copy.title;
+      const W = 1200, H = 620;
+      const c = document.createElement('canvas'); c.width = W; c.height = H;
+      const ctx = c.getContext('2d');
+      ctx.clearRect(0, 0, W, H);
+      const font = '700 354px "Noto Serif SC","Source Han Serif SC","Songti SC","STSong","SimSun",serif';
+      ctx.font = font;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = '#fff';
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 9;
+      ctx.lineJoin = 'round';
+      const chars = Array.from(text);
+      const gap = 62;
+      const widths = chars.map(ch => ctx.measureText(ch).width);
+      const total = widths.reduce((a, b) => a + b, 0) + gap * (chars.length - 1);
+      let cursor = W / 2 - total / 2;
+      for (let i = 0; i < chars.length; i++){
+        ctx.strokeText(chars[i], cursor + widths[i] / 2, H / 2 + 10);
+        ctx.fillText(chars[i], cursor + widths[i] / 2, H / 2 + 10);
+        cursor += widths[i] + gap;
+      }
+      const data = ctx.getImageData(0, 0, W, H).data;
+      const samples = [];
+      const step = 3;
+      for (let y = 0; y < H; y += step){
+        for (let x = 0; x < W; x += step){
+          if (data[(y * W + x) * 4 + 3] > 130) samples.push([x, y]);
+        }
+      }
+      const targetCount = reducedMotion ? 3200 : (isMobile ? CONFIG.particles.titleMobile : (isHigh ? CONFIG.particles.titleHigh : CONFIG.particles.titleDesktop));
+      const shuffle = mulberry32(9876);
+      for (let i = samples.length - 1; i > 0; i--){
+        const j = Math.floor(shuffle() * (i + 1));
+        const tmp = samples[i]; samples[i] = samples[j]; samples[j] = tmp;
+      }
+      const count = Math.min(targetCount, samples.length);
+      const worldW = 36.0;
+      const worldH = worldW * H / W;
+      const basePos = new Float32Array(count * 3);
+      const target = new Float32Array(count * 3);
+      const sizes = new Float32Array(count);
+      const phases = new Float32Array(count);
+      const r2 = mulberry32(4451);
+      for (let i = 0; i < count; i++){
+        const s = samples[i % samples.length];
+        const tx = (s[0] / W - 0.5) * worldW + (r2() - 0.5) * 0.045;
+        const ty = (0.5 - s[1] / H) * worldH + 16.2 + (r2() - 0.5) * 0.040;
+        const tz = 18 + (r2() - 0.5) * 0.50;
+        target[i * 3] = tx; target[i * 3 + 1] = ty; target[i * 3 + 2] = tz;
+        // 初始散落在雾中的大范围雪尘
+        basePos[i * 3] = (r2() - 0.5) * 36;
+        basePos[i * 3 + 1] = 2.0 + r2() * 14;
+        basePos[i * 3 + 2] = 18 + (r2() - 0.5) * 24;
+        sizes[i] = 0.058 + Math.pow(r2(), 1.8) * 0.082;
+        phases[i] = r2();
+      }
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.BufferAttribute(basePos, 3));
+      geo.setAttribute('aTarget', new THREE.BufferAttribute(target, 3));
+      geo.setAttribute('aSize', new THREE.BufferAttribute(sizes, 1));
+      geo.setAttribute('aPhase', new THREE.BufferAttribute(phases, 1));
+      const mat = new THREE.ShaderMaterial({
+        transparent: true,
+        depthWrite: false,
+        depthTest: true,
+        blending: THREE.NormalBlending,
+        toneMapped: false,
+        uniforms: {
+          uTime: { value: 0 },
+          uFormation: { value: reducedMotion ? 1 : 0 },
+          uOpacity: { value: 0.94 },
+          uPixelScale: { value: 1000 },
+          uColor: { value: new THREE.Color(0xdcebee) }
+        },
+        vertexShader: `
+          uniform float uTime, uFormation, uOpacity, uPixelScale;
+          attribute vec3 aTarget;
+          attribute float aSize, aPhase;
+          varying float vAlpha, vTwinkle;
+          void main(){
+            float form = smoothstep(0.0, 1.0, uFormation);
+            vec3 p = mix(position, aTarget, form);
+            p.x += sin(uTime * 0.54 + aPhase * 12.3) * (0.045 + 0.10 * (1.0 - form));
+            p.y += cos(uTime * 0.47 + aPhase * 9.1) * (0.035 + 0.08 * (1.0 - form));
+            p.z += sin(uTime * 0.38 + aPhase * 5.7) * 0.04;
+            vec4 mv = modelViewMatrix * vec4(p, 1.0);
+            gl_PointSize = clamp(aSize * uPixelScale / max(-mv.z, 1.0), 1.2, 10.0);
+            gl_Position = projectionMatrix * mv;
+            float fade = smoothstep(150.0, 18.0, -mv.z);
+            vAlpha = uOpacity * fade;
+            vTwinkle = 0.74 + 0.26 * sin(uTime * 1.7 + aPhase * 50.0);
+          }
+        `,
+        fragmentShader: `
+          varying float vAlpha, vTwinkle;
+          uniform vec3 uColor;
+          void main(){
+            vec2 c = gl_PointCoord - 0.5;
+            float d = length(c);
+            if (d > 0.5) discard;
+            float core = smoothstep(0.5, 0.05, d);
+            float soft = smoothstep(0.52, 0.16, d);
+            float a = core * 0.76 + soft * 0.34;
+            gl_FragColor = vec4(uColor * (0.92 + vTwinkle * 0.16), a * vAlpha * vTwinkle);
+          }
+        `
+      });
+      const points = new THREE.Points(geo, mat);
+      points.frustumCulled = false;
+      points.renderOrder = 4;
+      scene.add(points);
+      shared.title = { points, mat };
+    })();
+
+    /* ---------- 降雪：GPU 粒子 + 风力 + 远处渐隐 ---------- */
+    (function createSnowfall(){
+      const count = reducedMotion ? 650 : (isMobile ? CONFIG.particles.snowMobile : (isHigh ? CONFIG.particles.snowHigh : CONFIG.particles.snowDesktop));
+      const pos = new Float32Array(count * 3);
+      const phase = new Float32Array(count);
+      const size = new Float32Array(count);
+      const speed = new Float32Array(count);
+      const r3 = mulberry32(9001);
+      for (let i = 0; i < count; i++){
+        pos[i * 3] = (r3() * 2 - 1) * 58;
+        pos[i * 3 + 1] = r3() * 54;
+        pos[i * 3 + 2] = (r3() * 2 - 1) * 58;
+        phase[i] = r3() * TAU;
+        size[i] = 0.042 + Math.pow(r3(), 2.1) * 0.138;
+        speed[i] = 0.8 + r3() * 2.1;
+      }
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      geo.setAttribute('aPhase', new THREE.BufferAttribute(phase, 1));
+      geo.setAttribute('aSize', new THREE.BufferAttribute(size, 1));
+      geo.setAttribute('aSpeed', new THREE.BufferAttribute(speed, 1));
+      const mat = new THREE.ShaderMaterial({
+        transparent: true,
+        depthWrite: false,
+        depthTest: true,
+        blending: THREE.NormalBlending,
+        toneMapped: false,
+        uniforms: {
+          uTime: { value: 0 },
+          uCam: { value: new THREE.Vector3() },
+          uPixelScale: { value: 1000 },
+          uOpacity: { value: reducedMotion ? 0.45 : 0.92 },
+          uWind: { value: new THREE.Vector2(0.7, 0.14) },
+          uColor: { value: new THREE.Color(0xe2eef0) }
+        },
+        vertexShader: `
+          uniform float uTime, uPixelScale, uOpacity;
+          uniform vec3 uCam;
+          uniform vec2 uWind;
+          attribute float aPhase, aSize, aSpeed;
+          varying float vAlpha, vTwinkle;
+          void main(){
+            vec3 p = position;
+            float fall = mod(p.y - uTime * aSpeed, 54.0);
+            p.y = fall + 0.2;
+            p.x += sin(uTime * 0.75 + aPhase) * 0.75 + uTime * uWind.x;
+            p.z += cos(uTime * 0.56 + aPhase * 1.7) * 0.55 + uTime * uWind.y;
+            vec2 rel = p.xz - uCam.xz;
+            rel = mod(rel + 58.0, 116.0) - 58.0;
+            p.xz = uCam.xz + rel;
+            p.y += uCam.y * 0.18;
+            vec4 mv = modelViewMatrix * vec4(p, 1.0);
+            float dist = length(p - uCam);
+            gl_PointSize = clamp(aSize * uPixelScale / max(-mv.z, 1.0), 1.0, 7.5);
+            gl_Position = projectionMatrix * mv;
+            float farFade = 1.0 - smoothstep(68.0, 112.0, dist);
+            float nearFade = smoothstep(1.2, 4.0, dist);
+            vAlpha = uOpacity * farFade * nearFade;
+            vTwinkle = 0.78 + 0.22 * sin(uTime * 2.1 + aPhase * 24.0);
+          }
+        `,
+        fragmentShader: `
+          uniform vec3 uColor;
+          varying float vAlpha, vTwinkle;
+          void main(){
+            vec2 c = gl_PointCoord - 0.5;
+            float d = length(c);
+            if (d > 0.5) discard;
+            float a = smoothstep(0.5, 0.1, d);
+            gl_FragColor = vec4(uColor, a * vAlpha * vTwinkle);
+          }
+        `
+      });
+      const points = new THREE.Points(geo, mat);
+      points.frustumCulled = false;
+      points.renderOrder = 8;
+      scene.add(points);
+      shared.snow = { points, mat };
+    })();
+
+    /* ---------- 点击雪粉迸发 ---------- */
+    (function createBurst(){
+      const N = CONFIG.particles.burst;
+      const positions = new Float32Array(N * 3);
+      const alphas = new Float32Array(N);
+      const sizes = new Float32Array(N);
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      geo.setAttribute('aAlpha', new THREE.BufferAttribute(alphas, 1));
+      geo.setAttribute('aSize', new THREE.BufferAttribute(sizes, 1));
+      const mat = new THREE.ShaderMaterial({
+        transparent: true,
+        depthWrite: false,
+        depthTest: true,
+        toneMapped: false,
+        blending: THREE.NormalBlending,
+        uniforms: {
+          uPixelScale: { value: 1000 },
+          uColor: { value: new THREE.Color(0xe7f2f3) }
+        },
+        vertexShader: `
+          uniform float uPixelScale;
+          attribute float aAlpha, aSize;
+          varying float vAlpha;
+          void main(){
+            vec4 mv = modelViewMatrix * vec4(position, 1.0);
+            gl_PointSize = clamp(aSize * uPixelScale / max(-mv.z, 1.0), 1.0, 11.0);
+            gl_Position = projectionMatrix * mv;
+            vAlpha = aAlpha;
+          }
+        `,
+        fragmentShader: `
+          uniform vec3 uColor;
+          varying float vAlpha;
+          void main(){
+            vec2 c = gl_PointCoord - 0.5;
+            float d = length(c);
+            if (d > 0.5) discard;
+            gl_FragColor = vec4(uColor, smoothstep(0.5, 0.05, d) * vAlpha);
+          }
+        `
+      });
+      const points = new THREE.Points(geo, mat);
+      points.frustumCulled = false;
+      points.renderOrder = 9;
+      scene.add(points);
+      shared.burst = {
+        points, mat, positions, alphas, sizes,
+        vel: new Float32Array(N * 3),
+        life: new Float32Array(N),
+        geo
+      };
+    })();
+
+    /* ---------- 镜头曲线与交互 ---------- */
+    const cameraPosCurve = new THREE.CatmullRomCurve3(
+      CONFIG.camera.positions.map(p => new THREE.Vector3(p[0], p[1], p[2])), false, 'catmullrom', 0.24
+    );
+    const cameraLookCurve = new THREE.CatmullRomCurve3(
+      CONFIG.camera.looks.map(p => new THREE.Vector3(p[0], p[1], p[2])), false, 'catmullrom', 0.24
+    );
+    const tmpPos = new THREE.Vector3();
+    const tmpLook = new THREE.Vector3();
+    const anchorPos = new THREE.Vector3();
+    const projected = new THREE.Vector3();
+    const activeWeights = {};
+
+    function applyCamera(p, dt, first){
+      const t = clamp(p, 0, 1);
+      cameraPosCurve.getPoint(t, tmpPos);
+      cameraLookCurve.getPoint(t, tmpLook);
+      if (!shared.reduced){
+        const focus = Math.max(0, ...state.narrative.map(n => narrativeWeight(n, p)));
+        tmpPos.lerp(tmpLook, 0.006 + focus * 0.018);
+      }
+      camera.position.copy(tmpPos);
+      camera.lookAt(tmpLook);
+      const o = shared.orbit;
+      o.yaw = damp(o.yaw, o.targetYaw, 5.2, dt);
+      o.pitch = damp(o.pitch, o.targetPitch, 5.2, dt);
+      camera.rotateY(o.yaw);
+      camera.rotateX(o.pitch);
+      const fov = CONFIG.camera.fov - smoothstep(0.72, 1.0, p) * 2.5;
+      if (Math.abs(camera.fov - fov) > 0.001){
+        camera.fov = fov;
+        camera.updateProjectionMatrix();
+      }
+      camera.updateMatrixWorld();
+    }
+
+    function updateTitle(p){
+      if (!shared.title) return;
+      const mat = shared.title.mat;
+      const form = shared.reduced ? 1 : smoothstep(0.0, 1.0, clamp((shared.elapsed - 0.15) / 3.8, 0, 1));
+      const fade = shared.reduced ? 0 : 1 - smoothstep(0.095, 0.255, p);
+      mat.uniforms.uFormation.value = form;
+      mat.uniforms.uOpacity.value = 0.94 * fade;
+      shared.title.points.visible = mat.uniforms.uOpacity.value > 0.01;
+    }
+
+    function updateLabels(p){
+      const W = window.innerWidth, H = window.innerHeight;
+      const fixed = shared.reduced;
+      for (const item of state.narrative){
+        const w = narrativeWeight(item, p);
+        activeWeights[item.anchor] = w;
+        item.opacity = w;
+        const el = item.el;
+        if (!el) continue;
+        let x = W * 0.5, y = H * 0.5;
+        if (!fixed){
+          const a = CONFIG.anchors[item.anchor];
+          anchorPos.set(a.pos[0], a.pos[1], a.pos[2]);
+          projected.copy(anchorPos).project(camera);
+          const behind = projected.z > 1 || projected.z < -1;
+          x = (projected.x * 0.5 + 0.5) * W + a.offset[0] * W;
+          y = (-projected.y * 0.5 + 0.5) * H + a.offset[1] * H;
+          if (behind || x < -W * .3 || x > W * 1.3 || y < -H * .3 || y > H * 1.3){
+            el.style.opacity = '0';
+            continue;
+          }
+          const halfW = Math.min(el.offsetWidth || 420, W - 44) * 0.5;
+          const halfH = (el.offsetHeight || 80) * 0.5;
+          const mx = Math.max(halfW + 22, Math.min(W - halfW - 22, x));
+          const my = Math.max(halfH + 30, Math.min(H - halfH - 62, y));
+          el.style.left = mx.toFixed(1) + 'px';
+          el.style.top = my.toFixed(1) + 'px';
+        }
+        if (w < 0.002){
+          el.style.opacity = '0';
+          continue;
+        }
+        el.style.opacity = w.toFixed(3);
+        if (shared.reduced){
+          el.style.transform = 'translate(-50%,-50%)';
+          el.style.filter = 'none';
+        } else {
+          const lift = (1 - w) * 14;
+          const sc = 0.988 + w * 0.012;
+          el.style.transform = 'translate(-50%,-50%) translate3d(0,' + lift.toFixed(2) + 'px,0) scale(' + sc.toFixed(4) + ')';
+          el.style.filter = 'blur(' + ((1 - w) * 2.1).toFixed(2) + 'px)';
+        }
+      }
+    }
+
+    function addRipple(x, z){
+      if (reducedMotion || !shared.iceUniforms) return;
+      const ripple = shared.iceUniforms.uRipples.value[shared.rippleIndex];
+      ripple.set(x, z, shared.elapsed, 1.0);
+      shared.rippleIndex = (shared.rippleIndex + 1) % CONFIG.ice.ripples;
+    }
+
+    function burstAt(point){
+      if (reducedMotion) return;
+      const B = shared.burst;
+      if (!B) return;
+      const rr = mulberry32((Date.now() & 0xffff) + 17);
+      for (let i = 0; i < B.positions.length / 3; i++){
+        B.positions[i * 3] = point.x + (rr() - 0.5) * 0.35;
+        B.positions[i * 3 + 1] = 0.15 + rr() * 0.18;
+        B.positions[i * 3 + 2] = point.z + (rr() - 0.5) * 0.35;
+        const a = rr() * TAU;
+        const sp = 0.8 + rr() * 3.4;
+        B.vel[i * 3] = Math.cos(a) * sp * (0.4 + rr() * 0.7);
+        B.vel[i * 3 + 1] = 0.6 + rr() * 2.8;
+        B.vel[i * 3 + 2] = Math.sin(a) * sp * (0.4 + rr() * 0.7);
+        B.life[i] = 0.45 + rr() * 1.25;
+        B.alphas[i] = 0.9;
+        B.sizes[i] = 0.035 + rr() * 0.075;
+      }
+      B.geo.attributes.position.needsUpdate = true;
+      B.geo.attributes.aAlpha.needsUpdate = true;
+      B.geo.attributes.aSize.needsUpdate = true;
+    }
+
+    function updateBurst(dt){
+      const B = shared.burst;
+      if (!B) return;
+      let alive = false;
+      for (let i = 0; i < B.life.length; i++){
+        if (B.life[i] <= 0){ B.alphas[i] = 0; continue; }
+        alive = true;
+        B.life[i] -= dt;
+        B.vel[i * 3 + 1] -= 4.2 * dt;
+        B.positions[i * 3] += B.vel[i * 3] * dt;
+        B.positions[i * 3 + 1] += B.vel[i * 3 + 1] * dt;
+        B.positions[i * 3 + 2] += B.vel[i * 3 + 2] * dt;
+        B.vel[i * 3] *= (1 - dt * 0.9);
+        B.vel[i * 3 + 2] *= (1 - dt * 0.9);
+        if (B.positions[i * 3 + 1] < 0.05){
+          B.positions[i * 3 + 1] = 0.05;
+          B.vel[i * 3 + 1] *= -0.18;
+        }
+        B.alphas[i] = clamp(B.life[i] / 0.7, 0, 1) * 0.85;
+      }
+      if (alive){
+        B.geo.attributes.position.needsUpdate = true;
+        B.geo.attributes.aAlpha.needsUpdate = true;
+      }
+    }
+
+    /* ---------- pointer / touch / click ---------- */
+    const raycaster = shared.raycaster;
+    function pointerNDC(clientX, clientY){
+      return new THREE.Vector2((clientX / window.innerWidth) * 2 - 1, -(clientY / window.innerHeight) * 2 + 1);
+    }
+    function hitIce(clientX, clientY){
+      raycaster.setFromCamera(pointerNDC(clientX, clientY), camera);
+      const hit = new THREE.Vector3();
+      if (raycaster.ray.intersectPlane(shared.plane, hit)){
+        const halfW = CONFIG.ice.width / 2 - 2;
+        const zMin = CONFIG.ice.centerZ - CONFIG.ice.depth / 2 + 2;
+        const zMax = CONFIG.ice.centerZ + CONFIG.ice.depth / 2 - 2;
+        if (Math.abs(hit.x) <= halfW && hit.z >= zMin && hit.z <= zMax){
+          addRipple(hit.x, hit.z);
+          burstAt(hit);
+        }
+      }
+    }
+    function applyOrbitDelta(dx, dy){
+      const o = shared.orbit;
+      const yawSens = isMobile ? 0.00068 : 0.00042;
+      const pitchSens = isMobile ? 0.00050 : 0.00034;
+      o.targetYaw = clamp(o.targetYaw - dx * yawSens, -0.105, 0.105);
+      o.targetPitch = clamp(o.targetPitch - dy * pitchSens, -0.055, 0.055);
+      o.lastInteraction = performance.now();
+    }
+    function onPointerDown(e){
+      if (e.pointerType === 'touch') return;
+      if (e.button !== undefined && e.button !== 0) return;
+      const o = shared.orbit;
+      o.dragging = true;
+      o.lastX = e.clientX; o.lastY = e.clientY;
+      o.downX = e.clientX; o.downY = e.clientY;
+      o.downT = performance.now();
+      o.moved = 0;
+    }
+    function onPointerMove(e){
+      if (e.pointerType === 'touch') return;
+      state.pointerX = (e.clientX / window.innerWidth) * 2 - 1;
+      state.pointerY = (e.clientY / window.innerHeight) * 2 - 1;
+      const o = shared.orbit;
+      if (!o.dragging || reducedMotion) return;
+      const dx = e.clientX - o.lastX;
+      const dy = e.clientY - o.lastY;
+      o.lastX = e.clientX; o.lastY = e.clientY;
+      o.moved += Math.abs(dx) + Math.abs(dy);
+      applyOrbitDelta(dx, dy);
+    }
+    function onPointerUp(e){
+      if (e.pointerType === 'touch') return;
+      const o = shared.orbit;
+      if (!o.dragging) return;
+      o.dragging = false;
+      const dist = Math.hypot(e.clientX - o.downX, e.clientY - o.downY);
+      const dt = performance.now() - o.downT;
+      if (dist < 7 && dt < 520) hitIce(e.clientX, e.clientY);
+      o.lastInteraction = performance.now();
+    }
+    function onPointerCancel(){ shared.orbit.dragging = false; }
+    dom.scene.addEventListener('pointerdown', onPointerDown, { passive: true });
+    window.addEventListener('pointermove', onPointerMove, { passive: true });
+    window.addEventListener('pointerup', onPointerUp, { passive: true });
+    window.addEventListener('pointercancel', onPointerCancel, { passive: true });
+
+    /* 触摸：横向拖动时锁定为视角，纵向仍交给页面滚动 */
+    const touchOrbit = { active: false, id: null, lastX: 0, lastY: 0, downX: 0, downY: 0, downT: 0, lock: '' };
+    function onTouchStart(e){
+      if (reducedMotion || e.touches.length !== 1) return;
+      const t = e.touches[0];
+      touchOrbit.active = true;
+      touchOrbit.id = t.identifier;
+      touchOrbit.lastX = touchOrbit.downX = t.clientX;
+      touchOrbit.lastY = touchOrbit.downY = t.clientY;
+      touchOrbit.downT = performance.now();
+      touchOrbit.lock = '';
+      shared.orbit.dragging = false;
+    }
+    function onTouchMove(e){
+      if (!touchOrbit.active) return;
+      let t = null;
+      for (let i = 0; i < e.touches.length; i++){
+        if (e.touches[i].identifier === touchOrbit.id){ t = e.touches[i]; break; }
+      }
+      if (!t) return;
+      state.pointerX = (t.clientX / window.innerWidth) * 2 - 1;
+      state.pointerY = (t.clientY / window.innerHeight) * 2 - 1;
+      const totalX = t.clientX - touchOrbit.downX;
+      const totalY = t.clientY - touchOrbit.downY;
+      if (!touchOrbit.lock){
+        if (Math.abs(totalX) < 6 && Math.abs(totalY) < 6) return;
+        if (Math.abs(totalX) > Math.abs(totalY) * 1.12){
+          touchOrbit.lock = 'x';
+          shared.orbit.dragging = true;
+          touchOrbit.lastX = t.clientX;
+          touchOrbit.lastY = t.clientY;
+          e.preventDefault();
+          return;
+        }
+        touchOrbit.lock = 'y';
+        touchOrbit.active = false;
+        return;
+      }
+      if (touchOrbit.lock !== 'x') return;
+      e.preventDefault();
+      const dx = t.clientX - touchOrbit.lastX;
+      const dy = t.clientY - touchOrbit.lastY;
+      touchOrbit.lastX = t.clientX;
+      touchOrbit.lastY = t.clientY;
+      shared.orbit.moved += Math.abs(dx) + Math.abs(dy);
+      applyOrbitDelta(dx, dy);
+    }
+    function onTouchEnd(e){
+      if (!touchOrbit.active) return;
+      let t = null;
+      for (let i = 0; i < e.changedTouches.length; i++){
+        if (e.changedTouches[i].identifier === touchOrbit.id){ t = e.changedTouches[i]; break; }
+      }
+      const wasX = touchOrbit.lock === 'x';
+      const dist = t ? Math.hypot(t.clientX - touchOrbit.downX, t.clientY - touchOrbit.downY) : 0;
+      const dt = performance.now() - touchOrbit.downT;
+      shared.orbit.dragging = false;
+      touchOrbit.active = false;
+      touchOrbit.lock = '';
+      if (!wasX && t && dist < 9 && dt < 520) hitIce(t.clientX, t.clientY);
+      shared.orbit.lastInteraction = performance.now();
+    }
+    function onTouchCancel(){
+      shared.orbit.dragging = false;
+      touchOrbit.active = false;
+      touchOrbit.lock = '';
+    }
+    dom.scene.addEventListener('touchstart', onTouchStart, { passive: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: false });
+    window.addEventListener('touchend', onTouchEnd, { passive: true });
+    window.addEventListener('touchcancel', onTouchCancel, { passive: true });
+
+    window.addEventListener('resize', onResize);
+
+    function resize(){
+      const w = window.innerWidth, h = window.innerHeight;
+      const nextDpr = Math.min(window.devicePixelRatio || 1, isMobile ? CONFIG.quality.mobileDpr : CONFIG.quality.maxDpr);
+      renderer.setPixelRatio(nextDpr);
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      shared.uPixelScale = (h * nextDpr) / (2 * Math.tan(camera.fov * Math.PI / 360));
+      shared.dpr = nextDpr;
+      if (shared.title) shared.title.mat.uniforms.uPixelScale.value = shared.uPixelScale;
+      if (shared.snow) shared.snow.mat.uniforms.uPixelScale.value = shared.uPixelScale;
+      if (shared.burst) shared.burst.mat.uniforms.uPixelScale.value = shared.uPixelScale;
+      if (shared.reduced) {
+        applyCamera(0, 0, true);
+        updateLabels(0);
+        renderer.render(scene, camera);
+      }
+    }
+    function onResize(){
+      if (state.hidden) return;
+      resize();
+    }
+    resize();
+
+    function tick(){
+      if (!state.webglReady) return;
+      if (document.hidden || state.hidden){
+        shared.webglRAF = requestAnimationFrame(tick);
+        return;
+      }
+      const rawDt = shared.clock.getDelta();
+      const dt = Math.min(rawDt, 0.05);
+      shared.elapsed += dt;
+      const targetScroll = state.scroll;
+      state.scrollSmooth = damp(state.scrollSmooth, targetScroll, 4.7, dt);
+      const p = state.scrollSmooth;
+      const time = shared.elapsed;
+
+      applyCamera(p, dt);
+      updateTitle(p);
+      updateLabels(p);
+      updateBurst(dt);
+
+      camera.updateMatrixWorld();
+      if (shared.sky) shared.sky.uniforms.uTime.value = time;
+      if (shared.iceUniforms) shared.iceUniforms.uTime.value = time;
+      if (shared.snow){
+        shared.snow.mat.uniforms.uTime.value = time;
+        shared.snow.mat.uniforms.uCam.value.copy(camera.position);
+      }
+      if (shared.title){
+        shared.title.mat.uniforms.uTime.value = time;
+      }
+      for (const m of shared.mist){
+        const k = m.userData;
+        m.position.x = Math.sin(time * 0.023 * k.drift + k.phase) * 9 + Math.sin(time * 0.007 + k.phase) * 5;
+      }
+      if (shared.cabinGlow){
+        const pulse = 0.70 + Math.sin(time * 0.7) * 0.035;
+        shared.cabinGlow.material.opacity = pulse;
+      }
+      // 闲置一段时间后缓慢回正，限制角度且不过冲
+      if (shared.orbit && !shared.orbit.dragging && performance.now() - shared.orbit.lastInteraction > 2400){
+        shared.orbit.targetYaw *= (1 - dt * 0.35);
+        shared.orbit.targetPitch *= (1 - dt * 0.35);
+        if (Math.abs(shared.orbit.targetYaw) < 0.0001) shared.orbit.targetYaw = 0;
+        if (Math.abs(shared.orbit.targetPitch) < 0.0001) shared.orbit.targetPitch = 0;
+      }
+
+      renderer.render(scene, camera);
+      shared.webglRAF = requestAnimationFrame(tick);
+    }
+
+    function reducedRenderOnScroll(){
+      if (state.mode !== 'webgl') return;
+      state.scrollSmooth = state.scroll;
+      updateTitle(state.scrollSmooth);
+      updateLabels(state.scrollSmooth);
+      renderer.render(scene, camera);
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      state.hidden = document.hidden;
+      if (!document.hidden && state.webglReady && !reducedMotion){
+        shared.clock.getDelta();
+      }
+    });
+
+    // 首帧完成后切换到 WebGL
+    shared.webglRAF = 0;
+    state.webglReady = true;
+    state.mode = 'webgl';
+    applyCamera(0, 0.016, true);
+    updateTitle(0);
+    updateLabels(0);
+    if (shared.title) shared.title.mat.uniforms.uFormation.value = reducedMotion ? 1 : 0;
+    renderer.render(scene, camera);
+    dom.body.classList.remove('mode-fallback');
+    dom.body.classList.add('mode-webgl');
+    if (reducedMotion){
+      updateLabels(0);
+      window.addEventListener('scroll', reducedRenderOnScroll, { passive: true });
+    } else {
+      shared.clock.start();
+      shared.webglRAF = requestAnimationFrame(tick);
+    }
+    setTimeout(stopFallback, 1400);
+  }
+
+  /* ============================================================
+     启动：优先立即绘制 2D 降级场景，再异步加载 three.js
+     ============================================================ */
+  setScrollProgress();
+  startFallback();
+
+  (function loadThree(){
+    let attempt = 0;
+    const urls = [
+      'https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js',
+      'https://unpkg.com/three@0.149.0/build/three.min.js'
+    ];
+    let settled = false;
+    function next(){
+      if (attempt >= urls.length){ return; }
+      const s = document.createElement('script');
+      s.src = urls[attempt++];
+      s.async = true;
+      s.onload = function(){
+        if (window.THREE && !state.webglReady){
+          settled = true;
+          try{ initWebGL(); }catch(err){ startFallback(); }
+        }
+      };
+      s.onerror = function(){
+        if (!settled) next();
+      };
+      document.head.appendChild(s);
+    }
+    // 3 秒内 CDN 仍未完成，降级画面已可见，不阻塞阅读
+    setTimeout(() => {
+      if (!state.webglReady) startFallback();
+    }, 3000);
+    next();
+  })();
+
+})();
+</script>
+</body>
+</html>
